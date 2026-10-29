@@ -28,6 +28,14 @@ public class Student
     private String email;
     @Column(nullable = false, unique = true, length = 13)
     private String jmbg;
+    @Column(name = "broj_indeksa", nullable = false, unique = true)
+    private String brojIndeksa;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Grupa grupa;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    private Smer smer;
+
+
     private LocalDate datumRodjenja;
     private String mestoRodjenja;
     private String mestoPrebivalista;

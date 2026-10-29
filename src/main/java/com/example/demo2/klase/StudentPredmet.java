@@ -25,7 +25,7 @@ public class StudentPredmet
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "drzi_predmet_id")
+    @JoinColumn(name = "predmet_id")
     @ToString.Exclude
-    private DrziPredmet drziPredmet;
+    private Predmet predmet;
 }
