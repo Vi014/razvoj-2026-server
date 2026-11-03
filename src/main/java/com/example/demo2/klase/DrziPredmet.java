@@ -3,9 +3,7 @@ package com.example.demo2.klase;
 import com.example.demo2.klase.enumi.TipPredavaca;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 @Entity
 @Getter
@@ -35,5 +33,5 @@ public class DrziPredmet
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private TipPredavaca uloga;
+    private String uloga;
 }

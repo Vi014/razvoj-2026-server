@@ -1,5 +1,6 @@
 package com.example.demo2.klase;
 
+import com.example.demo2.klase.enumi.TipPredavaca;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -35,6 +36,6 @@ public class Predavac
     private LocalDate datumRodjenja;
     @Column(nullable = false)
     private boolean aktivan = true;
-    private String titula;
+    private TipPredavaca titula;
 
 }
