@@ -16,21 +16,18 @@ public class DrziPredmet
     private Long id;
 
     @NotNull
-    @MapsId("predavacId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "predavac_id")
+    @JoinColumn(name = "predavac_id", nullable = false)
     @ToString.Exclude
     private Predavac predavac;
 
     @NotNull
-    @MapsId("predmetId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "predmet_id")
+    @JoinColumn(name = "predmet_id", nullable = false)
     @ToString.Exclude
     private Predmet predmet;
 
     @NotNull
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private String uloga;
 }
