@@ -93,6 +93,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 
+			<!-- ovo smo koristili ranije za testiranje dok baza nije funkcionisala. vrv nam vise nece trebati, al nek ostane ovako iskomentarisano za svkai slucaj
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -105,6 +106,7 @@
 					</excludes>
 				</configuration>
 			</plugin>
+			-->
 		</plugins>
 	</build>
 </project>

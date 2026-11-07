@@ -24,10 +24,4 @@ public class Predmet
     private String naziv;
     @PositiveOrZero
     private Integer espb;
-    @PositiveOrZero
-    private Integer semestar;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @ToString.Exclude
-    private Smer smer;
 }

@@ -17,7 +17,6 @@ import java.time.LocalDate;
 @ToString
 public class Predavac
 {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -37,5 +36,4 @@ public class Predavac
     @Column(nullable = false)
     private boolean aktivan = true;
     private TipPredavaca titula;
-
 }

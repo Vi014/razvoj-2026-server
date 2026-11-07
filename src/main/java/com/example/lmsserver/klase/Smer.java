@@ -18,7 +18,7 @@ import java.util.List;
 public class Smer
 {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
     @NotBlank
     @Column(nullable = false)
@@ -31,8 +31,8 @@ public class Smer
     private VrsteStudija vrstaStudija;
     private Integer ukupnoEspb;
 
-    @JsonIgnore
+    /* @JsonIgnore
     @OneToMany(mappedBy = "smer")
     @ToString.Exclude
-    private List<Predmet> predmeti = new ArrayList<>();
+    private List<Predmet> predmeti = new ArrayList<>(); */
 }

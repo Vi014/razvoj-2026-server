@@ -1,5 +1,6 @@
 package com.example.lmsserver.klase;
 
+import com.example.lmsserver.klase.enumi.UlogaPredavaca;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -29,5 +30,5 @@ public class DrziPredmet
 
     @NotNull
     @Column(nullable = false)
-    private String uloga;
+    private UlogaPredavaca uloga;
 }
