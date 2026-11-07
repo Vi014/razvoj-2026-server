@@ -18,6 +18,7 @@ public class Seeder implements CommandLineRunner
     // Seeder služi za generisanje test podataka
     // TODO: iskucati kod
 
+    //region repozitorijumi
     private final SmerRepository smerRepository;
     private final GrupaRepository grupaRepository;
     private final PredmetRepository predmetRepository;
@@ -31,8 +32,9 @@ public class Seeder implements CommandLineRunner
     private final StudentTerminRepository terminStudentRepository;
     private final ResenjeRepository resenjeRepository;
     private final KomentarRepository komentarRepository;
+    //endregion
 
-    // pomoćne metode za pravljenje entiteta
+    //region pomoćne metode za pravljenje entiteta
 
     private Smer smer(String oznaka, String naziv, int trajanjeGodina, int trajanjeSemestara, VrsteStudija vrsteStudija)
     {
@@ -106,6 +108,7 @@ public class Seeder implements CommandLineRunner
         return s;
     }
 
+    //endregion
 
     @Override
     public void run(String... args) throws Exception
@@ -123,13 +126,13 @@ public class Seeder implements CommandLineRunner
         Predmet p5 = predmetRepository.save(predmet("005", "Objektno-orijentisano programiranje", 8,2, rn));
         Predmet p6 = predmetRepository.save(predmet("006", "Objektno-orijentisano programiranje", 8,2, ri));
 
-        Predavac pr1 = predavacRepository.save(predavac("Petar", "Petrović", "ppetrovic@raf.rs", "0123456789012", TipPredavaca.REDOVNI_PROFESOR));
-        Predavac pr2 = predavacRepository.save(predavac("Jovana", "Jovanović", "jjovanovic@raf.rs", "0123456789012", TipPredavaca.VANDREDNI_PROFESOR));
+        Predavac pr1 = predavacRepository.save(predavac("Petar", "Petrović", "ppetrovic@raf.rs", "0123456789013", TipPredavaca.REDOVNI_PROFESOR));
+        Predavac pr2 = predavacRepository.save(predavac("Jovana", "Jovanović", "jjovanovic@raf.rs", "0123456789014", TipPredavaca.VANDREDNI_PROFESOR));
         Predavac pr3 = predavacRepository.save(predavac("Nikola", "Nikolić", "nnikolic@raf.rs", "0123456789012", TipPredavaca.REDOVNI_PROFESOR));
 
-        Predavac as1 = predavacRepository.save(predavac("Miloš", "Milošević", "mmilosevic@raf.rs", "0123456789012", TipPredavaca.ASISTENT));
-        Predavac as2 = predavacRepository.save(predavac("Filip", "Filipović", "ffilipovic@raf.rs", "0123456789012", TipPredavaca.ASISTENT));
-        Predavac as3 = predavacRepository.save(predavac("Marko", "Marković", "mmarkovic@raf.rs", "0123456789012", TipPredavaca.DEMONSTRATOR));
+        Predavac as1 = predavacRepository.save(predavac("Miloš", "Milošević", "mmilosevic@raf.rs", "0123456789067", TipPredavaca.ASISTENT));
+        Predavac as2 = predavacRepository.save(predavac("Filip", "Filipović", "ffilipovic@raf.rs", "0123456789041", TipPredavaca.ASISTENT));
+        Predavac as3 = predavacRepository.save(predavac("Marko", "Marković", "mmarkovic@raf.rs", "0123456789042", TipPredavaca.DEMONSTRATOR));
 
         drziPredmetRepository.save(drziPredmet(pr1, p1,"Profesor"));
         drziPredmetRepository.save(drziPredmet(as1, p1, "Asistent"));
@@ -152,13 +155,13 @@ public class Seeder implements CommandLineRunner
         Grupa ri2 = grupaRepository.save(grupa("122", ri, 1));
 
         List<Student> studenti = new ArrayList<>();
-        studenti.add(studentRepository.save(student("Stefan","Stefanović","0123456789012","1/2026 SI", si1, si)));
-        studenti.add(studentRepository.save(student("Stefan","Stefanović","0123456789012","2/2026 SI", si2, si)));
+        studenti.add(studentRepository.save(student("Stefan","Stefanović","0123456789010","1/2026 SI", si1, si)));
+        studenti.add(studentRepository.save(student("Stefan","Stefanović","0123456789011","2/2026 SI", si2, si)));
         studenti.add(studentRepository.save(student("Stefan","Stefanović","0123456789012","3/2026 RN", rn1, rn)));
-        studenti.add(studentRepository.save(student("Stefan","Stefanović","0123456789012","4/2026 RN", rn2, rn)));
-        studenti.add(studentRepository.save(student("Stefan","Stefanović","0123456789012","5/2026 RI", ri1, ri)));
-        studenti.add(studentRepository.save(student("Stefan","Stefanović","0123456789012","6/2026 RI", ri2, ri)));
-        studenti.add(studentRepository.save(student("Stefan","Ponovac","0123456789012","1/2025 SI", null, si)));
+        studenti.add(studentRepository.save(student("Stefan","Stefanović","0123456789013","4/2026 RN", rn2, rn)));
+        studenti.add(studentRepository.save(student("Stefan","Stefanović","0123456789014","5/2026 RI", ri1, ri)));
+        studenti.add(studentRepository.save(student("Stefan","Stefanović","0123456789015","6/2026 RI", ri2, ri)));
+        studenti.add(studentRepository.save(student("Stefan","Ponovac","0123456789016","1/2025 SI", null, si)));
 
         for (Student s : studenti)
         {
@@ -178,9 +181,5 @@ public class Seeder implements CommandLineRunner
                 studentPredmetRepository.save(studentPredmet(s,p6));
             }
         }
-
-
-
-
     }
 }
