@@ -166,10 +166,11 @@ public class Seeder implements CommandLineRunner
         return z;
     }
 
-    private Resenje resenje(Zadatak zadatak, String resenjeURL, LocalDateTime krenuo, LocalDateTime predao, BigDecimal poeni)
+    private Resenje resenje(Zadatak zadatak, StudentTermin studentTermin, String resenjeURL, LocalDateTime krenuo, LocalDateTime predao, BigDecimal poeni)
     {
         Resenje r = new Resenje();
         r.setZadatak(zadatak);
+        r.setStudentTermin(studentTermin);
         r.setResenjeUrl(resenjeURL);
         r.setKrenuo(krenuo);
         r.setPredao(predao);
@@ -556,7 +557,7 @@ public class Seeder implements CommandLineRunner
         bpKolZadaci.add(zadatakRepository.save(zadatak(bpKolT, (short) 2, "Napisati upit sa GROUP BY i HAVING.", "https://git.example.com/bp/kol/z2", new BigDecimal("10.00"))));
         //endregion
 
-        //region TerminStudent
+        //region TerminStudent, Resenje, Komentar
         List<Student> uupStudenti = studenti.stream()
                 .filter(s -> s.getGodina() == 1)
                 .filter(s -> s.getSmer().equals(rn) || s.getSmer().equals(ri) || s.getSmer().equals(si))
@@ -564,7 +565,12 @@ public class Seeder implements CommandLineRunner
                 .toList();
         for(Student s : uupStudenti)
         {
-            studentTerminRepository.save(studentTermin(s, uupKolT, uupKolT.getPocetak().plusMinutes(2), uupKolT.getKraj().minusMinutes(5)));
+            StudentTermin st = studentTerminRepository.save(studentTermin(s, uupKolT, uupKolT.getPocetak().plusMinutes(2), uupKolT.getKraj().minusMinutes(5)));
+            for(Zadatak z : uupKolZadaci)
+            {
+                Resenje r = resenjeRepository.save(resenje(z, st,"https://git.example.com/resenja/" + s.getId() + "/" + z.getId(), uupKolT.getPocetak().plusMinutes(2), uupKolT.getKraj().minusMinutes(5), BigDecimal.valueOf(3.0)));
+                komentarRepository.save(komentar(r, pr1, "Rešenje je delimično tačno, obrati pažnju na granične slučajeve."));
+            }
         }
         List<Student> oopStudenti = studenti.stream()
                 .filter(s -> s.getGodina() == 1)
@@ -573,7 +579,12 @@ public class Seeder implements CommandLineRunner
                 .toList();
         for(Student s : oopStudenti)
         {
-            studentTerminRepository.save(studentTermin(s, oopKolT, oopKolT.getPocetak().plusMinutes(2), oopKolT.getKraj().minusMinutes(5)));
+            StudentTermin st = studentTerminRepository.save(studentTermin(s, oopKolT, oopKolT.getPocetak().plusMinutes(2), oopKolT.getKraj().minusMinutes(5)));
+            for(Zadatak z : oopKolZadaci)
+            {
+                Resenje r = resenjeRepository.save(resenje(z, st,"https://git.example.com/resenja/" + s.getId() + "/" + z.getId(), oopKolT.getPocetak().plusMinutes(2), oopKolT.getKraj().minusMinutes(5), BigDecimal.valueOf(3.0)));
+                komentarRepository.save(komentar(r, pr2, "Rešenje je delimično tačno, obrati pažnju na granične slučajeve."));
+            }
         }
         List<Student> bpStudenti = studenti.stream()
                 .filter(s -> s.getGodina() == 2)
@@ -582,32 +593,10 @@ public class Seeder implements CommandLineRunner
                 .toList();
         for(Student s : bpStudenti)
         {
-            studentTerminRepository.save(studentTermin(s, bpKolT, bpKolT.getPocetak().plusMinutes(2), bpKolT.getKraj().minusMinutes(5)));
-        }
-        //endregion
-
-        //region Resenje, Komentar
-        for(Student s : uupStudenti)
-        {
-            for(Zadatak z : uupKolZadaci)
-            {
-                Resenje r = resenjeRepository.save(resenje(z, "https://git.example.com/resenja/" + s.getId() + "/" + z.getId(), uupKolT.getPocetak().plusMinutes(2), uupKolT.getKraj().minusMinutes(5), BigDecimal.valueOf(3.0)));
-                komentarRepository.save(komentar(r, pr1, "Rešenje je delimično tačno, obrati pažnju na granične slučajeve."));
-            }
-        }
-        for(Student s : oopStudenti)
-        {
-            for(Zadatak z : oopKolZadaci)
-            {
-                Resenje r = resenjeRepository.save(resenje(z, "https://git.example.com/resenja/" + s.getId() + "/" + z.getId(), oopKolT.getPocetak().plusMinutes(2), oopKolT.getKraj().minusMinutes(5), BigDecimal.valueOf(3.0)));
-                komentarRepository.save(komentar(r, pr2, "Rešenje je delimično tačno, obrati pažnju na granične slučajeve."));
-            }
-        }
-        for(Student s : bpStudenti)
-        {
+            StudentTermin st = studentTerminRepository.save(studentTermin(s, bpKolT, bpKolT.getPocetak().plusMinutes(2), bpKolT.getKraj().minusMinutes(5)));
             for(Zadatak z : bpKolZadaci)
             {
-                Resenje r = resenjeRepository.save(resenje(z, "https://git.example.com/resenja/" + s.getId() + "/" + z.getId(), bpKolT.getPocetak().plusMinutes(2), bpKolT.getKraj().minusMinutes(5), BigDecimal.valueOf(3.0)));
+                Resenje r = resenjeRepository.save(resenje(z, st,"https://git.example.com/resenja/" + s.getId() + "/" + z.getId(), bpKolT.getPocetak().plusMinutes(2), bpKolT.getKraj().minusMinutes(5), BigDecimal.valueOf(3.0)));
                 komentarRepository.save(komentar(r, pr3, "Rešenje je delimično tačno, obrati pažnju na granične slučajeve."));
             }
         }

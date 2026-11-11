@@ -26,6 +26,12 @@ public class Resenje
     @ToString.Exclude
     private Zadatak zadatak;
 
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "termin_student_id", nullable = false)
+    @ToString.Exclude
+    private StudentTermin studentTermin;
+
     @Size(max = 500)
     @Column(name = "resenje_url", length = 500)
     private String resenjeUrl;
@@ -37,4 +43,16 @@ public class Resenje
     @DecimalMin("0.0")
     @Column(precision = 5, scale = 2)
     private BigDecimal poeni;
+
+    public void validiraj()
+    {
+        if (poeni != null && poeni.compareTo(zadatak.getMaxPoena()) > 0)
+        {
+            throw new IllegalStateException("Poeni (" + poeni + ") prelaze maksimum zadatka (" + zadatak.getMaxPoena() + ")");
+        }
+        if (krenuo != null && predao != null && predao.isBefore(krenuo))
+        {
+            throw new IllegalStateException("Predaja ne moze biti pre pocetka rada");
+        }
+    }
 }

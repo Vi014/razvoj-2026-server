@@ -8,6 +8,6 @@ public enum StatusPolaganja
     NIJE_PRIJAVLJEN,
     IZASAO,
     NIJE_IZASAO,
-    PREDAT,
+    PREDAO,
     PREGLEDAN
 }

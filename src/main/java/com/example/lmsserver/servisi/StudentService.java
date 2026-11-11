@@ -1,5 +1,6 @@
 package com.example.lmsserver.servisi;
 
+import com.example.lmsserver.exceptions.ResourceNotFoundException;
 import com.example.lmsserver.klase.Grupa;
 import com.example.lmsserver.klase.Smer;
 import com.example.lmsserver.klase.Student;
@@ -12,7 +13,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -40,7 +40,7 @@ public class StudentService {
     @Transactional
     public Student save(StudentRequest studentRequest) {
         Smer smer = smerRepository.findById(studentRequest.getSmerId())
-                .orElseThrow(() -> new ResourceNotFoundException("Neispravan unos smera.")); // TODO: proveriti jel ovo ispravan tip izuzetka, eventualno napraviti nas (primer ima svoj custom ResourceNotFoundException koji nasledjuje RuntimeException)
+                .orElseThrow(() -> new ResourceNotFoundException("Neispravan unos smera."));
 
         Grupa grupa = null;
         if (studentRequest.getGrupaId() != null) {
