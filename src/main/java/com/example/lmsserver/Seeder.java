@@ -6,6 +6,7 @@ import com.example.lmsserver.klase.enumi.TipProvere;
 import com.example.lmsserver.klase.enumi.UlogaPredavaca;
 import com.example.lmsserver.klase.enumi.VrsteStudija;
 import com.example.lmsserver.repozitorijumi.*;
+import com.example.lmsserver.util.EmailGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -70,12 +71,13 @@ public class Seeder implements CommandLineRunner
         return p;
     }
 
-    private Predavac predavac(String ime, String prezime, String email, String jmbg, LocalDate datumRodjenja, TipPredavaca titula)
+    private Predavac predavac(String ime, String prezime, String jmbg, LocalDate datumRodjenja, TipPredavaca titula)
     {
         Predavac p = new Predavac();
+        EmailGenerator e = new EmailGenerator();
         p.setIme(ime);
         p.setPrezime(prezime);
-        p.setEmail(email);
+        p.setEmail(e.GeneratePredavacEmail(ime, prezime));
         p.setJmbg(jmbg);
         p.setDatumRodjenja(datumRodjenja);
         p.setTitula(titula);
@@ -85,6 +87,7 @@ public class Seeder implements CommandLineRunner
     private Student student(String ime, String prezime, String jmbg, int godina, String brojIndeksa, Grupa grupa, Smer smer)
     {
         Student s = new Student();
+        EmailGenerator e = new EmailGenerator();
         s.setIme(ime);
         s.setPrezime(prezime);
         s.setJmbg(jmbg);
@@ -92,6 +95,7 @@ public class Seeder implements CommandLineRunner
         s.setBrojIndeksa(brojIndeksa);
         s.setGrupa(grupa);
         s.setSmer(smer);
+        s.setEmail(e.GenerateStudentEmail(ime,prezime,brojIndeksa));
         return s;
     }
 
@@ -120,10 +124,11 @@ public class Seeder implements CommandLineRunner
         }
     }
 
-    private ProveraZnanja proveraZnanja(Predmet predmet, TipProvere tipProvere, BigDecimal prag)
+    private ProveraZnanja proveraZnanja(Predmet predmet, String naziv, TipProvere tipProvere, BigDecimal prag)
     {
         ProveraZnanja p = new ProveraZnanja();
         p.setPredmet(predmet);
+        p.setNaziv(naziv);
         p.setTip(tipProvere);
         p.setPragPoena(prag);
         return p;
@@ -233,32 +238,32 @@ public class Seeder implements CommandLineRunner
 
         //region predavači
         // https://konvertor.rs/jmbg-validator
-        Predavac pr0 = predavacRepository.save(predavac("Petar",    "Petrović",  "ppetrovic@raf.rs",  "2104972720167", LocalDate.of(1972,  4, 21), TipPredavaca.REDOVNI_PROFESOR));
-        Predavac pr1 = predavacRepository.save(predavac("Jovana",   "Jovanović", "jjovanovic@raf.rs", "2308971927498", LocalDate.of(1971,  8, 23), TipPredavaca.VANREDNI_PROFESOR));
-        Predavac pr2 = predavacRepository.save(predavac("Nikola",   "Nikolić",   "nnikolic@raf.rs",   "2503967132798", LocalDate.of(1967,  3, 25), TipPredavaca.REDOVNI_PROFESOR));
-        Predavac pr3 = predavacRepository.save(predavac("Tibor",    "Rácz",      "tracz@raf.rs",      "1208971820075", LocalDate.of(1971,  8, 12), TipPredavaca.REDOVNI_PROFESOR));
-        Predavac pr4 = predavacRepository.save(predavac("Lucija",   "Radić",     "lradic@raf.rs",     "1206992355612", LocalDate.of(1992,  6, 12), TipPredavaca.VANREDNI_PROFESOR));
-        Predavac pr5 = predavacRepository.save(predavac("Luka",     "Jurić",     "ljuric@raf.rs",     "1208977311768", LocalDate.of(1977,  8, 12), TipPredavaca.REDOVNI_PROFESOR));
-        Predavac pr6 = predavacRepository.save(predavac("Etaoin",   "Shrdlu",    "eshrdlu@raf.rs",    "2907973850396", LocalDate.of(1973,  7, 29), TipPredavaca.VANREDNI_PROFESOR));
-        Predavac pr7 = predavacRepository.save(predavac("Jasmina",  "Marić",     "jmaric@raf.rs",     "0408978199908", LocalDate.of(1978,  8,  4), TipPredavaca.REDOVNI_PROFESOR));
-        Predavac pr8 = predavacRepository.save(predavac("Milica",   "Milić",     "mmilic@raf.rs",     "1809961227140", LocalDate.of(1961,  9, 18), TipPredavaca.VANREDNI_PROFESOR));
-        Predavac pr9 = predavacRepository.save(predavac("John",     "Doe",       "jdoe@raf.rs",       "1705978861463", LocalDate.of(1978,  5, 17), TipPredavaca.REDOVNI_PROFESOR));
+        Predavac pr0 = predavacRepository.save(predavac("Petar",    "Petrović",    "2104972720167", LocalDate.of(1972,  4, 21), TipPredavaca.REDOVNI_PROFESOR));
+        Predavac pr1 = predavacRepository.save(predavac("Jovana",   "Jovanović",  "2308971927498", LocalDate.of(1971,  8, 23), TipPredavaca.VANREDNI_PROFESOR));
+        Predavac pr2 = predavacRepository.save(predavac("Nikola",   "Nikolić",      "2503967132798", LocalDate.of(1967,  3, 25), TipPredavaca.REDOVNI_PROFESOR));
+        Predavac pr3 = predavacRepository.save(predavac("Tibor",    "Rácz",            "1208971820075", LocalDate.of(1971,  8, 12), TipPredavaca.REDOVNI_PROFESOR));
+        Predavac pr4 = predavacRepository.save(predavac("Lucija",   "Radić",          "1206992355612", LocalDate.of(1992,  6, 12), TipPredavaca.VANREDNI_PROFESOR));
+        Predavac pr5 = predavacRepository.save(predavac("Luka",     "Jurić",          "1208977311768", LocalDate.of(1977,  8, 12), TipPredavaca.REDOVNI_PROFESOR));
+        Predavac pr6 = predavacRepository.save(predavac("Etaoin",   "Shrdlu",    "2907973850396", LocalDate.of(1973,  7, 29), TipPredavaca.VANREDNI_PROFESOR));
+        Predavac pr7 = predavacRepository.save(predavac("Jasmina",  "Marić",          "0408978199908", LocalDate.of(1978,  8,  4), TipPredavaca.REDOVNI_PROFESOR));
+        Predavac pr8 = predavacRepository.save(predavac("Milica",   "Milić",          "1809961227140", LocalDate.of(1961,  9, 18), TipPredavaca.VANREDNI_PROFESOR));
+        Predavac pr9 = predavacRepository.save(predavac("John",     "Doe",              "1705978861463", LocalDate.of(1978,  5, 17), TipPredavaca.REDOVNI_PROFESOR));
 
-        Predavac as0 = predavacRepository.save(predavac("Miloš",    "Milošević", "mmilosevic@raf.rs", "2008995123833", LocalDate.of(1995,  8, 20), TipPredavaca.ASISTENT));
-        Predavac as1 = predavacRepository.save(predavac("Filip",    "Filipović", "ffilipovic@raf.rs", "2007000101607", LocalDate.of(2000,  7, 20), TipPredavaca.ASISTENT));
-        Predavac as2 = predavacRepository.save(predavac("Nikolina", "Marković",  "nmarkovic@raf.rs",  "2809000966720", LocalDate.of(2000,  9, 28), TipPredavaca.ASISTENT));
-        Predavac as3 = predavacRepository.save(predavac("Amon",     "Gus",       "agus@raf.rs",       "2507000172078", LocalDate.of(2000,  7, 25), TipPredavaca.ASISTENT));
-        Predavac as4 = predavacRepository.save(predavac("Jana",     "Janošević", "jjanosevic@raf.rs", "1511001527116", LocalDate.of(2001, 11, 15), TipPredavaca.ASISTENT));
-        Predavac as5 = predavacRepository.save(predavac("Milena",   "Marinkov",  "mmarinkov@raf.rs",  "3007003957603", LocalDate.of(2003,  7, 30), TipPredavaca.ASISTENT));
-        Predavac as6 = predavacRepository.save(predavac("Tanja",    "Tasić",     "ttasic@raf.rs",     "2809003919766", LocalDate.of(2003,  9, 28), TipPredavaca.ASISTENT));
-        Predavac as7 = predavacRepository.save(predavac("Bogdan",   "Bogdanov",  "bbogdanov@raf.rs",  "1501007750741", LocalDate.of(2007,  1, 15), TipPredavaca.ASISTENT));
-        Predavac as8 = predavacRepository.save(predavac("Mila",     "Petković",  "mpetkovic@raf.rs",  "2506001465706", LocalDate.of(2001,  6, 25), TipPredavaca.ASISTENT));
-        Predavac as9 = predavacRepository.save(predavac("Jelena",   "Mitrović",  "jmitrovic@raf.rs",  "3007005937758", LocalDate.of(2005,  7, 30), TipPredavaca.ASISTENT));
+        Predavac as0 = predavacRepository.save(predavac("Miloš",    "Milošević",  "2008995123833", LocalDate.of(1995,  8, 20), TipPredavaca.ASISTENT));
+        Predavac as1 = predavacRepository.save(predavac("Filip",    "Filipović",  "2007000101607", LocalDate.of(2000,  7, 20), TipPredavaca.ASISTENT));
+        Predavac as2 = predavacRepository.save(predavac("Nikolina", "Marković",    "2809000966720", LocalDate.of(2000,  9, 28), TipPredavaca.ASISTENT));
+        Predavac as3 = predavacRepository.save(predavac("Amon",     "Gus",             "2507000172078", LocalDate.of(2000,  7, 25), TipPredavaca.ASISTENT));
+        Predavac as4 = predavacRepository.save(predavac("Jana",     "Janošević",  "1511001527116", LocalDate.of(2001, 11, 15), TipPredavaca.ASISTENT));
+        Predavac as5 = predavacRepository.save(predavac("Milena",   "Marinkov",    "3007003957603", LocalDate.of(2003,  7, 30), TipPredavaca.ASISTENT));
+        Predavac as6 = predavacRepository.save(predavac("Tanja",    "Tasić",         "2809003919766", LocalDate.of(2003,  9, 28), TipPredavaca.ASISTENT));
+        Predavac as7 = predavacRepository.save(predavac("Bogdan",   "Bogdanov",    "1501007750741", LocalDate.of(2007,  1, 15), TipPredavaca.ASISTENT));
+        Predavac as8 = predavacRepository.save(predavac("Mila",     "Petković",    "2506001465706", LocalDate.of(2001,  6, 25), TipPredavaca.ASISTENT));
+        Predavac as9 = predavacRepository.save(predavac("Jelena",   "Mitrović",    "3007005937758", LocalDate.of(2005,  7, 30), TipPredavaca.ASISTENT));
 
-        Predavac dm0 = predavacRepository.save(predavac("Marko",    "Marković",  "mmarkovic@raf.rs",  "2905992921668", LocalDate.of(1992,  5, 29), TipPredavaca.DEMONSTRATOR));
-        Predavac dm1 = predavacRepository.save(predavac("Mirka",    "Mirković",  "mmirkovic@raf.rs",  "2910975769929", LocalDate.of(1975, 10, 29), TipPredavaca.DEMONSTRATOR));
-        Predavac dm2 = predavacRepository.save(predavac("Gustavo",  "Fring",     "gfring@raf.rs",     "1801991593442", LocalDate.of(1991,  1, 18), TipPredavaca.DEMONSTRATOR));
-        Predavac dm3 = predavacRepository.save(predavac("Branko",   "Branković", "bbrankovic@raf.rs", "0612001121060", LocalDate.of(2001, 12,  6), TipPredavaca.DEMONSTRATOR));
+        Predavac dm0 = predavacRepository.save(predavac("Marko",    "Marković",    "2905992921668", LocalDate.of(1992,  5, 29), TipPredavaca.DEMONSTRATOR));
+        Predavac dm1 = predavacRepository.save(predavac("Mirka",    "Mirković",    "2910975769929", LocalDate.of(1975, 10, 29), TipPredavaca.DEMONSTRATOR));
+        Predavac dm2 = predavacRepository.save(predavac("Gustavo",  "Fring",          "1801991593442", LocalDate.of(1991,  1, 18), TipPredavaca.DEMONSTRATOR));
+        Predavac dm3 = predavacRepository.save(predavac("Branko",   "Branković",  "0612001121060", LocalDate.of(2001, 12,  6), TipPredavaca.DEMONSTRATOR));
         //endregion
 
         //region drziPredmet
@@ -520,10 +525,10 @@ public class Seeder implements CommandLineRunner
         //endregion
 
         //region Provera znanja
-        ProveraZnanja uupKol = proveraZnanjaRepository.save(proveraZnanja(uup, TipProvere.KOLOKVIJUM, new BigDecimal("15.00")));
-        ProveraZnanja uupIspit = proveraZnanjaRepository.save(proveraZnanja(uup, TipProvere.ISPIT, new BigDecimal("30.00")));
-        ProveraZnanja oopKol = proveraZnanjaRepository.save(proveraZnanja(oop, TipProvere.KOLOKVIJUM, new BigDecimal("20.00")));
-        ProveraZnanja bpKol = proveraZnanjaRepository.save(proveraZnanja(bp, TipProvere.KOLOKVIJUM, new BigDecimal("20.00")));
+        ProveraZnanja uupKol = proveraZnanjaRepository.save(proveraZnanja(uup, "Kolokvijum Uvod u Programiranje", TipProvere.KOLOKVIJUM, new BigDecimal("15.00")));
+        ProveraZnanja uupIspit = proveraZnanjaRepository.save(proveraZnanja(uup, "Ispit Uvod u Programiranje", TipProvere.ISPIT, new BigDecimal("30.00")));
+        ProveraZnanja oopKol = proveraZnanjaRepository.save(proveraZnanja(oop, "Kolokvijum Objektno Orijentisano Programiranje", TipProvere.KOLOKVIJUM, new BigDecimal("20.00")));
+        ProveraZnanja bpKol = proveraZnanjaRepository.save(proveraZnanja(bp, "Kolokvijum Baze Podataka",TipProvere.KOLOKVIJUM, new BigDecimal("20.00")));
         //endregion
 
         //region Termin

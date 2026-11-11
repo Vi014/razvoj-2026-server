@@ -9,6 +9,9 @@ import com.example.lmsserver.repozitorijumi.*;
 import com.example.lmsserver.util.Konverteri;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -62,5 +65,9 @@ public class StudentService {
             studentiEdited.add(Konverteri.StudentToStudentResponse(student));
         }
         return studentiEdited;
+    }
+
+    public Page<Student> findAll(int page, int size) {
+        return studentRepository.findAll(PageRequest.of(page, size, Sort.by("id").descending()));
     }
 }

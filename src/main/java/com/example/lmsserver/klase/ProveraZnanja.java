@@ -3,6 +3,8 @@ package com.example.lmsserver.klase;
 import com.example.lmsserver.klase.enumi.TipProvere;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -22,6 +24,11 @@ public class ProveraZnanja
     @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
     private Predmet predmet;
+
+    @NotBlank
+    @Size(max = 150)
+    @Column(nullable = false, length = 150)
+    private String naziv;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
