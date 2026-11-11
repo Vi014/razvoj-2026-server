@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
 public class Seeder implements CommandLineRunner
 {
     // Seeder služi za generisanje test podataka
-    // TODO: iskucati kod
 
     //region repozitorijumi
     private final SmerRepository smerRepository;
@@ -321,7 +320,6 @@ public class Seeder implements CommandLineRunner
         //endregion
 
         //region Grupa
-
         Grupa g101 = grupaRepository.save(grupa("101", rn, 1));
         Grupa g102 = grupaRepository.save(grupa("102", rn, 1));
         Grupa g201 = grupaRepository.save(grupa("201", rn, 2));
@@ -558,7 +556,7 @@ public class Seeder implements CommandLineRunner
                 .filter(s -> s.getGodina() == 1)
                 .filter(s -> s.getSmer().equals(rn) || s.getSmer().equals(ri) || s.getSmer().equals(si))
                 .limit(3)
-                .collect(Collectors.toList());
+                .toList();
         for(Student s : uupStudenti)
         {
             studentTerminRepository.save(studentTermin(s, uupKolT, uupKolT.getPocetak().plusMinutes(2), uupKolT.getKraj().minusMinutes(5)));
@@ -567,7 +565,7 @@ public class Seeder implements CommandLineRunner
                 .filter(s -> s.getGodina() == 1)
                 .filter(s -> s.getSmer().equals(rn) || s.getSmer().equals(ri) || s.getSmer().equals(si))
                 .skip(3).limit(3)
-                .collect(Collectors.toList());
+                .toList();
         for(Student s : oopStudenti)
         {
             studentTerminRepository.save(studentTermin(s, oopKolT, oopKolT.getPocetak().plusMinutes(2), oopKolT.getKraj().minusMinutes(5)));
@@ -576,7 +574,7 @@ public class Seeder implements CommandLineRunner
                 .filter(s -> s.getGodina() == 2)
                 .filter(s -> s.getSmer().equals(rn) || s.getSmer().equals(si))
                 .limit(3)
-                .collect(Collectors.toList());
+                .toList();
         for(Student s : bpStudenti)
         {
             studentTerminRepository.save(studentTermin(s, bpKolT, bpKolT.getPocetak().plusMinutes(2), bpKolT.getKraj().minusMinutes(5)));
@@ -609,7 +607,5 @@ public class Seeder implements CommandLineRunner
             }
         }
         //endregion
-
-
     }
 }
