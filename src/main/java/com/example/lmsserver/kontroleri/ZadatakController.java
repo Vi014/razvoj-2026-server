@@ -23,9 +23,9 @@ public class ZadatakController {
     }
 
     @GetMapping(path = "{id}")
-    public Zadatak getZadatakById(@PathVariable long id)
+    public ZadatakResponse getZadatakById(@PathVariable long id)
     {
-        return zadatakService.getZadatak(id);
+        return zadatakService.getZadatakId(id);
     }
 
     @PutMapping("/{id}")

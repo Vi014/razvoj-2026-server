@@ -116,9 +116,32 @@ public class ZadatakService
         }
     }
 
-    public List<Zadatak> getZadaciForTermin(long terminId)
+    private ZadatakResponse mapToResponse(Zadatak zadatak)
     {
-        return zadatakRepository.findByTerminIdOrderByRedniBrojAsc(terminId);
+        ZadatakResponse response = new ZadatakResponse();
+        response.setId(zadatak.getId());
+        response.setTerminId(zadatak.getTermin().getId());
+        response.setRedniBroj(Integer.valueOf(zadatak.getRedniBroj()));
+        response.setOpis(zadatak.getOpis());
+        response.setPocetniKodUrl(zadatak.getPocetniKodUrl());
+        response.setMaxPoena(zadatak.getMaxPoena());
+        return response;
+    }
+
+    @Transactional
+    public List<ZadatakResponse> getZadaciForTermin(long terminId)
+    {
+        return zadatakRepository.findByTerminIdOrderByRedniBrojAsc(terminId)
+                .stream()
+                .map(this::mapToResponse)
+                .toList();
+    }
+
+    @Transactional
+    public ZadatakResponse getZadatakId(long id)
+    {
+        Zadatak zadatak = zadatakRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Zadatak sa id-jem '" + id + "' ne postoji."));
+        return mapToResponse(zadatak);
     }
 
     public Zadatak getZadatak(long id)

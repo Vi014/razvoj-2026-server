@@ -4,8 +4,8 @@ import com.example.lmsserver.exceptions.ConflictException;
 import com.example.lmsserver.exceptions.ResourceNotFoundException;
 import com.example.lmsserver.klase.Predmet;
 import com.example.lmsserver.klase.ProveraZnanja;
-import com.example.lmsserver.klase.Student;
 import com.example.lmsserver.kontroleri.request.ProveraZnanjaRequest;
+import com.example.lmsserver.kontroleri.response.ProveraZnanjaResponse;
 import com.example.lmsserver.repozitorijumi.PredmetRepository;
 import com.example.lmsserver.repozitorijumi.ProveraZnanjaRepository;
 import com.example.lmsserver.util.Konverteri;
@@ -91,6 +91,21 @@ public class ProveraZnanjaService
     public ProveraZnanja findById(long id)
     {
         return proveraZnanjaRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Provera znanja sa id-jem '" + id + "' ne postoji."));
+    }
+
+    @Transactional
+    public ProveraZnanjaResponse findProveraById(long id)
+    {
+        ProveraZnanja provera = proveraZnanjaRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Provera znanja sa id-jem '" + id + "' ne postoji."));
+        ProveraZnanjaResponse response = new ProveraZnanjaResponse();
+        response.setId(provera.getId());
+        response.setNaziv(provera.getNaziv());
+        response.setTip(provera.getTip());
+        response.setPragPoena(provera.getPragPoena());
+        response.setPredmetId(provera.getPredmet().getId());
+        response.setPredmetSifra(provera.getPredmet().getSifra());
+        response.setPredmetNaziv(provera.getPredmet().getNaziv());
+        return response;
     }
 
 

@@ -5,6 +5,7 @@ import com.example.lmsserver.klase.Termin;
 import com.example.lmsserver.kontroleri.request.ProveraZnanjaRequest;
 import com.example.lmsserver.kontroleri.response.PageResponse;
 import com.example.lmsserver.kontroleri.response.ProveraZnanjaResponse;
+import com.example.lmsserver.kontroleri.response.TerminResponse;
 import com.example.lmsserver.servisi.ProveraZnanjaService;
 import com.example.lmsserver.servisi.TerminService;
 import com.example.lmsserver.util.Konverteri;
@@ -37,13 +38,13 @@ public class ProveraZnanjaController
     }
 
     @GetMapping(path = "/{id}")
-    public ProveraZnanja getProveraZnanjaById(@PathVariable Long id)
+    public ProveraZnanjaResponse getProveraZnanjaById(@PathVariable Long id)
     {
-        return proveraZnanjaService.findById(id);
+        return proveraZnanjaService.findProveraById(id);
     }
 
     @GetMapping(path = "/{id}/termini")
-    public List<Termin> getTerminiForProveraZnanja(@PathVariable Long id)
+    public List<TerminResponse> getTerminiForProveraZnanja(@PathVariable Long id)
     {
         return terminService.terminiZaProveru(id);
     }

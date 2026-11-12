@@ -4,6 +4,7 @@ import com.example.lmsserver.klase.Termin;
 import com.example.lmsserver.klase.Zadatak;
 import com.example.lmsserver.kontroleri.request.TerminRequest;
 import com.example.lmsserver.kontroleri.response.TerminResponse;
+import com.example.lmsserver.kontroleri.response.ZadatakResponse;
 import com.example.lmsserver.servisi.TerminService;
 import com.example.lmsserver.servisi.ZadatakService;
 import jakarta.validation.Valid;
@@ -30,25 +31,25 @@ public class TerminController
     }
 
     @GetMapping(path = "/{id}")
-    public Termin getTerminById(@PathVariable int id)
+    public TerminResponse getTerminById(@PathVariable int id)
     {
-        return terminService.findById(id);
+        return terminService.findTerminById(id);
     }
 
     @GetMapping(path = "/{id}/zadaci")
-    public List<Zadatak> getZadaciByTerminId(@PathVariable int id)
+    public List<ZadatakResponse> getZadaciByTerminId(@PathVariable int id)
     {
         return zadatakService.getZadaciForTermin(id);
     }
 
     @GetMapping(path = "/u-toku")
-    public List<Termin> getTerminiUToku()
+    public List<TerminResponse> getTerminiUToku()
     {
         return terminService.terminiUToku(LocalDateTime.now());
     }
 
     @GetMapping(path = "/predmet/{id}")
-    public List<Termin> getTerminiZaPredmet(@PathVariable int id)
+    public List<TerminResponse> getTerminiZaPredmet(@PathVariable int id)
     {
         return terminService.terminiZaPredmet(id);
     }

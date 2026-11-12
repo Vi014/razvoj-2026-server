@@ -138,23 +138,57 @@ public class TerminService
         }
     }
 
+    private TerminResponse mapToResponse(Termin termin)
+    {
+        TerminResponse response = new TerminResponse();
+        response.setId(termin.getId());
+        response.setDatum(termin.getDatum());
+        response.setPocetak(termin.getPocetak());
+        response.setKraj(termin.getKraj());
+        response.setProveraId(termin.getProvera().getId());
+        response.setProveraNaziv(termin.getProvera().getNaziv());
+        response.setPredmetNaziv(termin.getProvera().getPredmet().getNaziv());
+        response.setPredavacId(termin.getPredavac().getId());
+        response.setPredavacImePrezime(termin.getPredavac().getIme() + " " + termin.getPredavac().getPrezime());
+        return response;
+    }
+
     public Termin findById(long id)
     {
         return terminRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Termin sa id-jem '" + id + "' ne postoji."));
     }
 
-    public List<Termin> terminiUToku(LocalDateTime time)
+    @Transactional
+    public TerminResponse findTerminById(long id)
     {
-        return terminRepository.getTerminiUToku(time);
+        Termin termin = terminRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Termin sa id-jem '" + id + "' ne postoji."));
+        return mapToResponse(termin);
     }
 
-    public List<Termin> terminiZaPredmet(long predmetId)
+    @Transactional
+    public List<TerminResponse> terminiUToku(LocalDateTime time)
     {
-        return terminRepository.getTerminiPredmeta(predmetId);
+        return terminRepository.getTerminiUToku(time)
+                .stream()
+                .map(this::mapToResponse)
+                .toList();
     }
 
-    public List<Termin> terminiZaProveru(long predmetId)
+    @Transactional
+    public List<TerminResponse> terminiZaPredmet(long predmetId)
     {
-        return terminRepository.getTerminiProvere(predmetId);
+        return terminRepository.getTerminiPredmeta(predmetId)
+                .stream()
+                .map(this::mapToResponse)
+                .toList();
+    }
+
+    @Transactional
+    public List<TerminResponse> terminiZaProveru(long proveraId)
+    {
+        return terminRepository.getTerminiProvere(proveraId)
+                .stream()
+                .map(this::mapToResponse)
+                .toList();
     }
 }
