@@ -12,7 +12,6 @@ public class Konverteri {
         Student student = new Student();
         student.setIme(studentRequest.getIme());
         student.setPrezime(studentRequest.getPrezime());
-        student.setEmail(studentRequest.getEmail());
         student.setJmbg(studentRequest.getJmbg());
         student.setGodina(studentRequest.getGodina());
         student.setBrojIndeksa(studentRequest.getBrojIndeksa());

@@ -7,6 +7,7 @@ import com.example.lmsserver.klase.Student;
 import com.example.lmsserver.kontroleri.request.StudentRequest;
 import com.example.lmsserver.kontroleri.response.StudentResponse;
 import com.example.lmsserver.repozitorijumi.*;
+import com.example.lmsserver.util.EmailGenerator;
 import com.example.lmsserver.util.Konverteri;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -49,12 +50,14 @@ public class StudentService {
         }
 
         Student student = Konverteri.StudentRequestToStudent(studentRequest);
+
         student.setSmer(smer);
         student.setGrupa(grupa);
+        student.setEmail(EmailGenerator.GenerateStudentEmail(student.getIme(), student.getPrezime(), student.getBrojIndeksa()));
 
         return studentRepository.save(student);
 
-        // TODO: validacija? automatsko generisanje mejla?
+        // TODO: validacija?
     }
 
     @Transactional

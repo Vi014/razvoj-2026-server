@@ -17,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping(path = "/api/student")
 public class StudentController {
-    //TODO - utvrditi koji sve api endpointi treba da se nalaze u projektu i napraviti sve objekte vezane za njih
+    //TODO - dopuni ovo, imaš već negde zapisano šta fali
     final StudentService studentService;
 
     @PostMapping(path = "/add")

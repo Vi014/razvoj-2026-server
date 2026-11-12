@@ -74,10 +74,9 @@ public class Seeder implements CommandLineRunner
     private Predavac predavac(String ime, String prezime, String jmbg, LocalDate datumRodjenja, TipPredavaca titula)
     {
         Predavac p = new Predavac();
-        EmailGenerator e = new EmailGenerator();
         p.setIme(ime);
         p.setPrezime(prezime);
-        p.setEmail(e.GeneratePredavacEmail(ime, prezime));
+        p.setEmail(EmailGenerator.GeneratePredavacEmail(ime, prezime));
         p.setJmbg(jmbg);
         p.setDatumRodjenja(datumRodjenja);
         p.setTitula(titula);
@@ -87,7 +86,6 @@ public class Seeder implements CommandLineRunner
     private Student student(String ime, String prezime, String jmbg, int godina, String brojIndeksa, Grupa grupa, Smer smer)
     {
         Student s = new Student();
-        EmailGenerator e = new EmailGenerator();
         s.setIme(ime);
         s.setPrezime(prezime);
         s.setJmbg(jmbg);
@@ -95,7 +93,7 @@ public class Seeder implements CommandLineRunner
         s.setBrojIndeksa(brojIndeksa);
         s.setGrupa(grupa);
         s.setSmer(smer);
-        s.setEmail(e.GenerateStudentEmail(ime,prezime,brojIndeksa));
+        s.setEmail(EmailGenerator.GenerateStudentEmail(ime,prezime,brojIndeksa));
         return s;
     }
 

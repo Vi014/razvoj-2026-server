@@ -3,6 +3,7 @@ package com.example.lmsserver.klase;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,6 +29,7 @@ public class Student
     @Email
     private String email;
     @Column(nullable = false, unique = true, length = 13)
+    @Pattern(regexp = "\\d{13}")
     private String jmbg;
     @PositiveOrZero
     @Column(nullable = false)

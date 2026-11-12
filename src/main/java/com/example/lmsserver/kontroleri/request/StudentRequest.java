@@ -2,10 +2,7 @@ package com.example.lmsserver.kontroleri.request;
 
 import com.example.lmsserver.klase.Grupa;
 import com.example.lmsserver.klase.Smer;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,11 +19,12 @@ public class StudentRequest {
     @NotBlank
     private String prezime;
 
-    @Email
-    private String email; // potrebna validacija da je unique?
+    // @Email
+    // private String email; // potrebna validacija da je unique?
+    // email se UVEK automatski generiše te uopšte nije potreban ni u kom requestu
 
     @NotNull
-    @Length(min = 13, max = 13)
+    //@Pattern(regexp = "\\d{13}", message = "JMBG u neispravnom formatu (proverite dužinu i prisustvo karaktera koji nisu cifre")
     private String jmbg;
 
     @PositiveOrZero
