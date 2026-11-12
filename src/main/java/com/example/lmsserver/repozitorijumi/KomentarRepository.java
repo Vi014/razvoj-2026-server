@@ -10,5 +10,5 @@ public interface KomentarRepository extends JpaRepository<Komentar, Long>
 {
     // svaki repository sadrži u sebi sql upite vezane za tu tabelu (klasu), za ovo smatram da treba da se dogovorimo šta će ići u koj
 
-    List<Komentar> findByResenje(Resenje resenje);
+    List<Komentar> findByResenjeIdOrderByIdAsc(Long resenjeId);
 }

@@ -14,7 +14,7 @@ public class ResenjeController
 {
     final ResenjeService resenjeService;
 
-    @PatchMapping(path = "/{resenjeId}/poeni")
+    @PutMapping(path = "/{resenjeId}/poeni")
     public ResenjeResponse upisiPoene(@PathVariable Long resenjeId, @RequestBody @Valid PoeniRequest poeniRequest)
     {
         return resenjeService.upisiPoene(resenjeId, poeniRequest);

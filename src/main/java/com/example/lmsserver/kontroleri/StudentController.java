@@ -1,5 +1,7 @@
 package com.example.lmsserver.kontroleri;
 
+import com.example.lmsserver.klase.ProveraZnanja;
+import com.example.lmsserver.klase.Termin;
 import com.example.lmsserver.kontroleri.request.StudentRequest;
 import com.example.lmsserver.kontroleri.response.PageResponse;
 import com.example.lmsserver.kontroleri.response.StudentResponse;

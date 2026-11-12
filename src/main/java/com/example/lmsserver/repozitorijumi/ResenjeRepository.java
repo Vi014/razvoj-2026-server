@@ -12,4 +12,6 @@ public interface ResenjeRepository extends JpaRepository<Resenje, Long>
 
     List<Resenje> findByZadatak(Zadatak zadatak);
 
+    List<Resenje> findByStudentTerminId(Long studentTerminId);
+
 }

@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "/api/prijava")
-public class PrijavaController {
+public class PrijavaController
+{
     final PrijavaService prijavaService;
 
     @PostMapping(path = "/add")
@@ -19,5 +20,11 @@ public class PrijavaController {
     public PrijavaResponse prijaviStudenta(@RequestBody @Valid PrijavaRequest prijavaRequest)
     {
         return prijavaService.prijavi(prijavaRequest);
+    }
+
+    @PutMapping("/remove")
+    public PrijavaResponse odjaviStudenta(@RequestBody @Valid PrijavaRequest request)
+    {
+        return prijavaService.odjavi(request);
     }
 }

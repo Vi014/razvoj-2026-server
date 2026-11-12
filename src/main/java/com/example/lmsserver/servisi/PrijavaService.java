@@ -6,6 +6,7 @@ import com.example.lmsserver.klase.ProveraZnanja;
 import com.example.lmsserver.klase.Student;
 import com.example.lmsserver.klase.StudentTermin;
 import com.example.lmsserver.klase.Termin;
+import com.example.lmsserver.klase.enumi.StatusPolaganja;
 import com.example.lmsserver.kontroleri.request.PrijavaRequest;
 import com.example.lmsserver.kontroleri.response.PrijavaResponse;
 import com.example.lmsserver.repozitorijumi.StudentPredmetRepository;
@@ -64,6 +65,39 @@ public class PrijavaService
         StudentTermin prijava = new StudentTermin();
         prijava.setTermin(termin);
         prijava.setStudent(student);  // status je PRIJAVLJEN po podrazumevanoj vrednosti
+        return Konverteri.StudentTerminToPrijavaResponse(studentTerminRepository.save(prijava));
+    }
+
+    @Transactional
+    public PrijavaResponse odjavi(PrijavaRequest request)
+    {
+        Termin termin = terminRepository.findById(request.getTerminId())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Termin sa id " + request.getTerminId() + " ne postoji."
+                ));
+
+        StudentTermin prijava = studentTerminRepository.findByTerminIdAndStudentId(termin.getId(),request.getStudentId());
+
+        // Termin mora biti u budućnosti
+        if (!termin.getPocetak().isAfter(LocalDateTime.now()))
+        {
+            throw new ConflictException("Odjava nije moguća jer je termin već počeo.");
+        }
+
+        // Student mora trenutno biti prijavljen
+        if (prijava.getStatus() != StatusPolaganja.PRIJAVLJEN)
+        {
+            throw new ConflictException("Student nije prijavljen na ovaj termin.");
+        }
+
+        // Student ne sme već započeti polaganje
+        if (prijava.getUlazak() != null)
+        {
+            throw new ConflictException("Odjava nije moguća jer je student već započeo polaganje.");
+        }
+
+        prijava.setStatus(StatusPolaganja.NIJE_PRIJAVLJEN);
+
         return Konverteri.StudentTerminToPrijavaResponse(studentTerminRepository.save(prijava));
     }
 }

@@ -16,4 +16,6 @@ public interface ProveraZnanjaRepository extends JpaRepository<ProveraZnanja, Lo
     List<ProveraZnanja> findByPredmetAndTip(Predmet predmet, TipProvere tip);
 
     boolean existsByPredmetIdAndNazivIgnoreCase(Long predmetId, String naziv);
+
+    boolean existsByPredmetIdAndNazivIgnoreCaseAndIdNot(Long predmetId, String naziv, Long id);
 }

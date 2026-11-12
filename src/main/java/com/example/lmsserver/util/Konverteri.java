@@ -135,4 +135,15 @@ public class Konverteri {
         response.setPoeni(resenje.getPoeni());
         return response;
     }
+
+    public static KomentarResponse KomentarToKomentarResponse(Komentar komentar)
+    {
+        KomentarResponse response = new KomentarResponse();
+        response.setId(komentar.getId());
+        response.setResenjeId(komentar.getResenje().getId());
+        response.setPredavacId(komentar.getPredavac().getId());
+        response.setPredavacImePrezime(komentar.getPredavac().getIme() + " " + komentar.getPredavac().getPrezime());
+        response.setTekst(komentar.getTekst());
+        return response;
+    }
 }

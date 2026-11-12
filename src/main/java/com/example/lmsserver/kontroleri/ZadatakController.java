@@ -1,5 +1,6 @@
 package com.example.lmsserver.kontroleri;
 
+import com.example.lmsserver.klase.Zadatak;
 import com.example.lmsserver.kontroleri.request.ZadatakRequest;
 import com.example.lmsserver.kontroleri.response.ZadatakResponse;
 import com.example.lmsserver.servisi.ZadatakService;
@@ -20,4 +21,24 @@ public class ZadatakController {
     {
         return zadatakService.save(zadatakRequest);
     }
+
+    @GetMapping(path = "{id}")
+    public Zadatak getZadatakById(@PathVariable long id)
+    {
+        return zadatakService.getZadatak(id);
+    }
+
+    @PutMapping("/{id}")
+    public ZadatakResponse updateZadatak(@PathVariable Long id, @RequestBody @Valid ZadatakRequest request)
+    {
+        return zadatakService.update(id, request);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteZadatak(@PathVariable Long id)
+    {
+        zadatakService.delete(id);
+    }
+
 }

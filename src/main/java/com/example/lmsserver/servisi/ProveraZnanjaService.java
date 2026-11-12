@@ -22,9 +22,11 @@ public class ProveraZnanjaService
 {
     private final ProveraZnanjaRepository proveraZnanjaRepository;
     private final PredmetRepository predmetRepository;
+    private final TerminService terminService;
 
     @Transactional
-    public ProveraZnanja save(ProveraZnanjaRequest request) {
+    public ProveraZnanja save(ProveraZnanjaRequest request)
+    {
         Predmet predmet = predmetRepository.findById(request.getPredmetId())
                 .orElseThrow(() -> new ResourceNotFoundException("Predmet sa id " + request.getPredmetId() + " ne postoji."));
 
@@ -39,8 +41,57 @@ public class ProveraZnanjaService
         return proveraZnanjaRepository.save(provera);
     }
 
+    @Transactional
+    public ProveraZnanja update(Long id, ProveraZnanjaRequest request) {
 
-    public Page<ProveraZnanja> findAll(int page, int size) {
+        ProveraZnanja provera = findById(id);
+
+        if (terminService.proveraJePocela(id))
+        {
+            throw new ConflictException("Nije moguće izmeniti proveru znanja jer je neki od njenih termina već počeo.");
+        }
+
+        Predmet predmet = predmetRepository.findById(request.getPredmetId())
+                .orElseThrow(() -> new ResourceNotFoundException("Predmet sa id " + request.getPredmetId() + " ne postoji."));
+
+        String naziv = request.getNaziv().trim();
+
+        if (proveraZnanjaRepository.existsByPredmetIdAndNazivIgnoreCaseAndIdNot(predmet.getId(), naziv, id))
+        {
+            throw new ConflictException("Provera '" + naziv + "' već postoji za predmet " + predmet.getSifra() + ".");
+        }
+
+        provera.setPredmet(predmet);
+        provera.setNaziv(naziv);
+        provera.setTip(request.getTip());
+        provera.setPragPoena(request.getPragPoena());
+        return proveraZnanjaRepository.save(provera);
+    }
+
+    @Transactional
+    public void delete(Long id)
+    {
+
+        ProveraZnanja provera = findById(id);
+
+        if (terminService.proveraJePocela(id))
+        {
+            throw new ConflictException("Nije moguće obrisati proveru znanja jer je neki od njenih termina već počeo.");
+        }
+
+        proveraZnanjaRepository.delete(provera);
+    }
+
+
+    public Page<ProveraZnanja> findAll(int page, int size)
+    {
         return proveraZnanjaRepository.findAll(PageRequest.of(page, size, Sort.by("id").descending()));
     }
+
+    public ProveraZnanja findById(long id)
+    {
+        return proveraZnanjaRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Provera znanja sa id-jem '" + id + "' ne postoji."));
+    }
+
+
 }

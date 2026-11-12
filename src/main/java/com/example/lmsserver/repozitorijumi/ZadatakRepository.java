@@ -12,4 +12,6 @@ public interface ZadatakRepository extends JpaRepository<Zadatak, Long>
     List<Zadatak> findByTerminIdOrderByRedniBrojAsc(Long terminId);
 
     boolean existsByTerminIdAndRedniBroj(Long terminId, Short redniBroj);
+
+    boolean existsByTerminIdAndRedniBrojAndIdNot(Long terminId, Short redniBroj, Long id);
 }

@@ -19,6 +19,11 @@ public interface StudentTerminRepository extends JpaRepository<StudentTermin, Lo
 
     boolean existsByTerminIdAndStudentId(Long terminId, Long studentId);
 
+    boolean existsByTerminIdAndUlazakIsNotNull(Long terminId);
+
+    void deleteAllByTerminId(Long terminId);
+
+
     // da li je student vec prijavljen na bilo koji termin zadate provere
     @Query("select count(st) > 0 from StudentTermin st where st.student.id = :studentId and st.termin.provera.id = :proveraId")
     boolean existsPrijavaZaProveru(@Param("studentId") Long studentId, @Param("proveraId") Long proveraId);
