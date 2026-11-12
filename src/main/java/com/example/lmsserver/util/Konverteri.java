@@ -6,9 +6,18 @@ import com.example.lmsserver.kontroleri.request.StudentRequest;
 import com.example.lmsserver.kontroleri.request.TerminRequest;
 import com.example.lmsserver.kontroleri.request.ZadatakRequest;
 import com.example.lmsserver.kontroleri.response.*;
+import jakarta.transaction.Transactional;
 
 public class Konverteri {
-    public static Student StudentRequestToStudent(StudentRequest studentRequest) {
+    public static Konverteri instance;
+    private Konverteri() {}
+
+    public static Konverteri getInstance() {
+        if(instance == null) instance = new Konverteri();
+        return instance;
+    }
+
+    public Student StudentRequestToStudent(StudentRequest studentRequest) {
         Student student = new Student();
         student.setIme(studentRequest.getIme());
         student.setPrezime(studentRequest.getPrezime());
@@ -18,7 +27,8 @@ public class Konverteri {
         return student;
     }
 
-    public static StudentResponse StudentToStudentResponse(Student student) {
+    @Transactional
+    public StudentResponse StudentToStudentResponse(Student student) {
         StudentResponse studentResponse = new StudentResponse();
         studentResponse.setIme(student.getIme());
         studentResponse.setPrezime(student.getPrezime());
@@ -33,7 +43,7 @@ public class Konverteri {
         return studentResponse;
     }
 
-    public static ProveraZnanja ProveraZnanjaRequestToProveraZnanja(ProveraZnanjaRequest request)
+    public ProveraZnanja ProveraZnanjaRequestToProveraZnanja(ProveraZnanjaRequest request)
     {
         ProveraZnanja provera = new ProveraZnanja();
         provera.setNaziv(request.getNaziv().trim());
@@ -42,7 +52,7 @@ public class Konverteri {
         return provera;
     }
 
-    public static ProveraZnanjaResponse ProveraZnanjaToProveraZnanjaResponse(ProveraZnanja provera)
+    public ProveraZnanjaResponse ProveraZnanjaToProveraZnanjaResponse(ProveraZnanja provera)
     {
         ProveraZnanjaResponse response = new ProveraZnanjaResponse();
         response.setId(provera.getId());
@@ -55,7 +65,7 @@ public class Konverteri {
         return response;
     }
 
-    public static Zadatak ZadatakRequestToZadatak(ZadatakRequest request)
+    public Zadatak ZadatakRequestToZadatak(ZadatakRequest request)
     {
         Zadatak zadatak = new Zadatak();
         zadatak.setRedniBroj(request.getRedniBroj().shortValue());
@@ -65,7 +75,7 @@ public class Konverteri {
         return zadatak;
     }
 
-    public static ZadatakResponse ZadatakToZadatakResponse(Zadatak zadatak)
+    public ZadatakResponse ZadatakToZadatakResponse(Zadatak zadatak)
     {
         ZadatakResponse response = new ZadatakResponse();
         response.setId(zadatak.getId());
@@ -77,7 +87,7 @@ public class Konverteri {
         return response;
     }
 
-    public static Termin TerminRequestToTermin(TerminRequest request)
+    public Termin TerminRequestToTermin(TerminRequest request)
     {
         Termin termin = new Termin();
         termin.setDatum(request.getPocetak().toLocalDate());  // datum je izveden iz pocetka
@@ -86,7 +96,7 @@ public class Konverteri {
         return termin;
     }
 
-    public static TerminResponse TerminToTerminResponse(Termin termin)
+    public TerminResponse TerminToTerminResponse(Termin termin)
     {
         TerminResponse response = new TerminResponse();
         response.setId(termin.getId());
@@ -103,7 +113,7 @@ public class Konverteri {
         return response;
     }
 
-    public static PrijavaResponse StudentTerminToPrijavaResponse(StudentTermin prijava)
+    public PrijavaResponse StudentTerminToPrijavaResponse(StudentTermin prijava)
     {
         PrijavaResponse response = new PrijavaResponse();
         response.setId(prijava.getId());
@@ -118,7 +128,7 @@ public class Konverteri {
         return response;
     }
 
-    public static ResenjeResponse ResenjeToResenjeResponse(Resenje resenje)
+    public ResenjeResponse ResenjeToResenjeResponse(Resenje resenje)
     {
         ResenjeResponse response = new ResenjeResponse();
         response.setId(resenje.getId());
@@ -135,7 +145,7 @@ public class Konverteri {
         return response;
     }
 
-    public static KomentarResponse KomentarToKomentarResponse(Komentar komentar)
+    public KomentarResponse KomentarToKomentarResponse(Komentar komentar)
     {
         KomentarResponse response = new KomentarResponse();
         response.setId(komentar.getId());

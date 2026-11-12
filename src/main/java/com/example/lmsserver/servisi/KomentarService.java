@@ -50,7 +50,7 @@ public class KomentarService
         komentar.setResenje(resenje);
         komentar.setPredavac(predavac);
         komentar.setTekst(request.getTekst().trim());
-        return Konverteri.KomentarToKomentarResponse(komentarRepository.save(komentar));
+        return Konverteri.getInstance().KomentarToKomentarResponse(komentarRepository.save(komentar));
     }
 
     @Transactional
@@ -65,7 +65,7 @@ public class KomentarService
         }
 
         komentar.setTekst(request.getTekst().trim());
-        return Konverteri.KomentarToKomentarResponse(komentarRepository.save(komentar));
+        return Konverteri.getInstance().KomentarToKomentarResponse(komentarRepository.save(komentar));
     }
 
     @Transactional
@@ -88,6 +88,6 @@ public class KomentarService
         {
             throw new ResourceNotFoundException("Resenje sa id " + resenjeId + " ne postoji.");
         }
-        return komentarRepository.findByResenjeIdOrderByIdAsc(resenjeId).stream().map(Konverteri::KomentarToKomentarResponse).toList();
+        return komentarRepository.findByResenjeIdOrderByIdAsc(resenjeId).stream().map(Konverteri.getInstance()::KomentarToKomentarResponse).toList();
     }
 }

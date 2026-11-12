@@ -27,6 +27,10 @@ public class PageResponse<T>
 
     public static <E, T> PageResponse<T> of(Page<E> page, Function<E, T> converter)
     {
-        return new PageResponse<>(page.getContent().stream().map(converter).toList(), new PageMetadata(page.getSize(), page.getNumber(), page.getTotalElements(), page.getTotalPages()));
+        return new PageResponse<>
+                (
+                        page.getContent().stream().map(converter).toList(),
+                        new PageMetadata(page.getSize(), page.getNumber(), page.getTotalElements(), page.getTotalPages())
+                );
     }
 }

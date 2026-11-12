@@ -41,6 +41,6 @@ public class ResenjeService
             // izuzetak ponistava transakciju, pa se izmenjeni poeni nikada ne upisuju u bazu
             throw new BadRequestException(e.getMessage());
         }
-        return Konverteri.ResenjeToResenjeResponse(resenjeRepository.save(resenje));
+        return Konverteri.getInstance().ResenjeToResenjeResponse(resenjeRepository.save(resenje));
     }
 }

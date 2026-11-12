@@ -43,9 +43,9 @@ public class ZadatakService
 
         // TODO (kada se uvede autentifikacija): prijavljeni predavac mora da drzi predmet provere
 
-        Zadatak zadatak = Konverteri.ZadatakRequestToZadatak(request);
+        Zadatak zadatak = Konverteri.getInstance().ZadatakRequestToZadatak(request);
         zadatak.setTermin(termin);
-        return Konverteri.ZadatakToZadatakResponse(zadatakRepository.save(zadatak));
+        return Konverteri.getInstance().ZadatakToZadatakResponse(zadatakRepository.save(zadatak));
     }
 
     @Transactional
@@ -90,7 +90,7 @@ public class ZadatakService
         zadatak.setPocetniKodUrl(request.getPocetniKodUrl());
         zadatak.setMaxPoena(request.getMaxPoena());
 
-        return Konverteri.ZadatakToZadatakResponse(zadatakRepository.save(zadatak));
+        return Konverteri.getInstance().ZadatakToZadatakResponse(zadatakRepository.save(zadatak));
     }
 
     @Transactional

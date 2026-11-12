@@ -34,7 +34,7 @@ public class ProveraZnanjaController
     @GetMapping(path = "/all/paginated")
     public PageResponse<ProveraZnanjaResponse> getAllProveraZnanjaPodaciPaginated(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "10") Integer size)
     {
-        return PageResponse.of(proveraZnanjaService.findAll(page, size), Konverteri::ProveraZnanjaToProveraZnanjaResponse);
+        return PageResponse.of(proveraZnanjaService.findAll(page, size), Konverteri.getInstance()::ProveraZnanjaToProveraZnanjaResponse);
     }
 
     @GetMapping(path = "/{id}")
@@ -52,7 +52,7 @@ public class ProveraZnanjaController
     @PutMapping("/{id}")
     public ProveraZnanjaResponse updateProveraZnanja(@PathVariable Long id, @RequestBody @Valid ProveraZnanjaRequest request)
     {
-        return Konverteri.ProveraZnanjaToProveraZnanjaResponse(proveraZnanjaService.update(id, request));
+        return Konverteri.getInstance().ProveraZnanjaToProveraZnanjaResponse(proveraZnanjaService.update(id, request));
     }
 
     @DeleteMapping("/{id}")

@@ -49,7 +49,7 @@ public class StudentService {
                     .orElseThrow(() -> new ResourceNotFoundException("Neispravan unos grupe."));
         }
 
-        Student student = Konverteri.StudentRequestToStudent(studentRequest);
+        Student student = Konverteri.getInstance().StudentRequestToStudent(studentRequest);
 
         student.setSmer(smer);
         student.setGrupa(grupa);
@@ -65,12 +65,14 @@ public class StudentService {
         List<Student> studentiUnedited = studentRepository.findAll();
         List<StudentResponse> studentiEdited = new ArrayList<>();
         for(Student student : studentiUnedited) {
-            studentiEdited.add(Konverteri.StudentToStudentResponse(student));
+            studentiEdited.add(Konverteri.getInstance().StudentToStudentResponse(student));
         }
         return studentiEdited;
     }
 
+    @Transactional
     public Page<Student> findAll(int page, int size) {
+        List<StudentResponse> tmp = findAll();
         return studentRepository.findAll(PageRequest.of(page, size, Sort.by("id").descending()));
     }
 }

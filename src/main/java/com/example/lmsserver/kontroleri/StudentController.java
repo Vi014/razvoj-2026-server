@@ -32,6 +32,8 @@ public class StudentController {
 
     @GetMapping(path = "/all/paginated")
     public PageResponse<StudentResponse> getAllStudentPodaciPaginated(@RequestParam(defaultValue="0") Integer page, @RequestParam(defaultValue="10") Integer size) {
-        return PageResponse.of(studentService.findAll(page, size), Konverteri::StudentToStudentResponse);
+        return PageResponse.of(studentService.findAll(page, size), Konverteri.getInstance()::StudentToStudentResponse);
     }
+
+
 }

@@ -36,7 +36,7 @@ public class ProveraZnanjaService
             throw new ConflictException("Provera '" + naziv + "' vec postoji za predmet " + predmet.getSifra() + ".");
         }
 
-        ProveraZnanja provera = Konverteri.ProveraZnanjaRequestToProveraZnanja(request);
+        ProveraZnanja provera = Konverteri.getInstance().ProveraZnanjaRequestToProveraZnanja(request);
         provera.setPredmet(predmet);
         return proveraZnanjaRepository.save(provera);
     }

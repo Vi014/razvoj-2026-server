@@ -60,10 +60,10 @@ public class TerminService
 
         // TODO (kada se uvede autentifikacija): prijavljeni predavac mora da drzi predmet provere
 
-        Termin termin = Konverteri.TerminRequestToTermin(request);
+        Termin termin = Konverteri.getInstance().TerminRequestToTermin(request);
         termin.setProvera(provera);
         termin.setPredavac(predavac);
-        return Konverteri.TerminToTerminResponse(terminRepository.save(termin));
+        return Konverteri.getInstance().TerminToTerminResponse(terminRepository.save(termin));
     }
     @Transactional
     public TerminResponse update(Long id, TerminRequest request) {
@@ -110,7 +110,7 @@ public class TerminService
         termin.setDatum(request.getDatum());
         termin.setPocetak(request.getPocetak());
         termin.setKraj(request.getKraj());
-        return Konverteri.TerminToTerminResponse(terminRepository.save(termin));
+        return Konverteri.getInstance().TerminToTerminResponse(terminRepository.save(termin));
     }
 
     @Transactional

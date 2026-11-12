@@ -63,7 +63,7 @@ public class PolaganjeService
         }
 
         List<ZadatakResponse> zadaci = zadatakRepository.findByTerminIdOrderByRedniBrojAsc(termin.getId()).stream()
-                .map(Konverteri::ZadatakToZadatakResponse)
+                .map(Konverteri.getInstance()::ZadatakToZadatakResponse)
                 .toList();
 
         UlazakResponse response = new UlazakResponse();
@@ -138,7 +138,7 @@ public class PolaganjeService
         response.setStatus(prijava.getStatus());
         response.setUlazak(prijava.getUlazak());
         response.setPredaja(prijava.getPredaja());
-        response.setResenja(resenja.stream().map(Konverteri::ResenjeToResenjeResponse).toList());
+        response.setResenja(resenja.stream().map(Konverteri.getInstance()::ResenjeToResenjeResponse).toList());
         return response;
     }
 }

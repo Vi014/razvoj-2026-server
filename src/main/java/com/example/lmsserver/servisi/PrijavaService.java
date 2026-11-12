@@ -65,7 +65,7 @@ public class PrijavaService
         StudentTermin prijava = new StudentTermin();
         prijava.setTermin(termin);
         prijava.setStudent(student);  // status je PRIJAVLJEN po podrazumevanoj vrednosti
-        return Konverteri.StudentTerminToPrijavaResponse(studentTerminRepository.save(prijava));
+        return Konverteri.getInstance().StudentTerminToPrijavaResponse(studentTerminRepository.save(prijava));
     }
 
     @Transactional
@@ -98,6 +98,6 @@ public class PrijavaService
 
         prijava.setStatus(StatusPolaganja.NIJE_PRIJAVLJEN);
 
-        return Konverteri.StudentTerminToPrijavaResponse(studentTerminRepository.save(prijava));
+        return Konverteri.getInstance().StudentTerminToPrijavaResponse(studentTerminRepository.save(prijava));
     }
 }
