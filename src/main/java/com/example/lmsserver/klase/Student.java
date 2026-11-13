@@ -9,8 +9,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.time.LocalDate;
-
 @Entity
 @Getter
 @Setter
@@ -41,15 +39,4 @@ public class Student
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Smer smer;
 
-
-    /*private LocalDate datumRodjenja;
-    private String mestoRodjenja;
-    private String mestoPrebivalista;
-    private String drzavaRodjenja;
-    private String drzavljanstvo;
-    private String nacionalnost;
-    private Character pol;
-    private String adresa;
-    private String brojTelefonaMobilni;
-    private String brojLicneKarte;*/
 }

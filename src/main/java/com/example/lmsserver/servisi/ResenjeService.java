@@ -26,7 +26,7 @@ public class ResenjeService
 
         // TODO (kada se uvede autentifikacija): prijavljeni predavac mora da drzi predmet provere (ADMIN sme sve)
 
-        if (resenje.getPredao() == null)
+        if (resenje.getStudentTermin().getPredaja() == null)
         {
             throw new ConflictException("Resenje jos nije predato, pa se ne moze ocenjivati.");
         }

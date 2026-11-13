@@ -23,8 +23,19 @@ public interface StudentTerminRepository extends JpaRepository<StudentTermin, Lo
 
     void deleteAllByTerminId(Long terminId);
 
+    long countByTerminId(Long terminId);
+
+    long countByTerminIdAndUlazakIsNotNull(Long terminId);
+
+    long countByTerminIdAndPredajaIsNotNull(Long terminId);
+
+    long countByTerminIdAndUlazakIsNull(Long terminId);
+
 
     // da li je student vec prijavljen na bilo koji termin zadate provere
     @Query("select count(st) > 0 from StudentTermin st where st.student.id = :studentId and st.termin.provera.id = :proveraId")
     boolean existsPrijavaZaProveru(@Param("studentId") Long studentId, @Param("proveraId") Long proveraId);
+
+    @Query("select st from StudentTermin st join fetch st.student s where st.termin.id = :terminId order by s.prezime, s.ime")
+    List<StudentTermin> findAllForMonitoring(@Param("terminId") Long terminId);
 }

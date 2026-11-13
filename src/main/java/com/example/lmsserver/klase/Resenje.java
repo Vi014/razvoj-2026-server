@@ -40,9 +40,6 @@ public class Resenje
     @Column(name = "resenje_url", length = 500)
     private String resenjeUrl;
 
-    private LocalDateTime krenuo;
-
-    private LocalDateTime predao;
 
     @DecimalMin("0.0")
     @Column(precision = 5, scale = 2)
@@ -54,7 +51,7 @@ public class Resenje
         {
             throw new IllegalStateException("Poeni (" + poeni + ") prelaze maksimum zadatka (" + zadatak.getMaxPoena() + ")");
         }
-        if (krenuo != null && predao != null && predao.isBefore(krenuo))
+        if (studentTermin.getUlazak() != null && studentTermin.getPredaja() != null && studentTermin.getPredaja().isBefore(studentTermin.getUlazak()))
         {
             throw new IllegalStateException("Predaja ne moze biti pre pocetka rada");
         }

@@ -2,7 +2,6 @@ package com.example.lmsserver.kontroleri;
 
 import com.example.lmsserver.kontroleri.request.LoginRequest;
 import com.example.lmsserver.kontroleri.response.LoginResponse;
-import com.example.lmsserver.servisi.AuthService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;

@@ -41,7 +41,7 @@ public class KomentarService
             throw new BadRequestException("Nalog predavaca nije aktivan.");
         }
 
-        if (resenje.getPredao() == null)
+        if (resenje.getStudentTermin().getPredaja() == null)
         {
             throw new ConflictException("Nije moguće komentarisati rešenje koje još nije predato.");
         }

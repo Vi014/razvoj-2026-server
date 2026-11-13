@@ -3,7 +3,6 @@ package com.example.lmsserver.kontroleri.response;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.data.domain.Page;
-import org.springframework.data.web.PagedModel;
 
 import java.util.List;
 import java.util.function.Function;

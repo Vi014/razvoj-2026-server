@@ -1,11 +1,7 @@
 package com.example.lmsserver.kontroleri.response;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PositiveOrZero;
+
 import lombok.Data;
-import org.hibernate.validator.constraints.Length;
 
 @Data
 public class StudentResponse {

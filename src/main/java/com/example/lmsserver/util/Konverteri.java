@@ -139,8 +139,8 @@ public class Konverteri {
         response.setStudentId(resenje.getStudentTermin().getStudent().getId());
         response.setBrojIndeksa(resenje.getStudentTermin().getStudent().getBrojIndeksa());
         response.setResenjeUrl(resenje.getResenjeUrl());
-        response.setKrenuo(resenje.getKrenuo());
-        response.setPredao(resenje.getPredao());
+        response.setKrenuo(resenje.getStudentTermin().getUlazak());
+        response.setPredao(resenje.getStudentTermin().getPredaja());
         response.setPoeni(resenje.getPoeni());
         return response;
     }

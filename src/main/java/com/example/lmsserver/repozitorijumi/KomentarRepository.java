@@ -1,7 +1,6 @@
 package com.example.lmsserver.repozitorijumi;
 
 import com.example.lmsserver.klase.Komentar;
-import com.example.lmsserver.klase.Resenje;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

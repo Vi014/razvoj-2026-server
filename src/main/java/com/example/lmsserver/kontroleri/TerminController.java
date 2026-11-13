@@ -1,7 +1,6 @@
 package com.example.lmsserver.kontroleri;
 
-import com.example.lmsserver.klase.Termin;
-import com.example.lmsserver.klase.Zadatak;
+
 import com.example.lmsserver.kontroleri.request.TerminRequest;
 import com.example.lmsserver.kontroleri.response.TerminResponse;
 import com.example.lmsserver.kontroleri.response.ZadatakResponse;

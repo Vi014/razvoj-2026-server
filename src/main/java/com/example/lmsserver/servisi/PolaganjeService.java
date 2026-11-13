@@ -111,9 +111,9 @@ public class PolaganjeService
         // Predajemo sva postojeća rešenja
         for (Resenje resenje : resenja)
         {
-            if (resenje.getPredao() == null)
+            if (resenje.getStudentTermin().getPredaja() == null)
             {
-                resenje.setPredao(sada);
+                resenje.getStudentTermin().setPredaja(sada);
                 try
                 {
                     resenje.validiraj();

@@ -5,8 +5,8 @@ import com.example.lmsserver.exceptions.ConflictException;
 import com.example.lmsserver.exceptions.ResourceNotFoundException;
 import com.example.lmsserver.klase.Predavac;
 import com.example.lmsserver.klase.ProveraZnanja;
+import com.example.lmsserver.klase.StudentTermin;
 import com.example.lmsserver.klase.Termin;
-import com.example.lmsserver.klase.Zadatak;
 import com.example.lmsserver.kontroleri.request.TerminRequest;
 import com.example.lmsserver.kontroleri.response.TerminResponse;
 import com.example.lmsserver.repozitorijumi.*;
@@ -15,6 +15,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -124,7 +125,6 @@ public class TerminService
         terminRepository.delete(termin);
     }
 
-
     public boolean proveraJePocela(Long proveraId)
     {
         return terminRepository.existsByProveraIdAndPocetakLessThanEqual(proveraId, LocalDateTime.now());
@@ -137,6 +137,8 @@ public class TerminService
             throw new ConflictException("Nije moguće izmeniti ili obrisati termin koji je već počeo.");
         }
     }
+
+
 
     private TerminResponse mapToResponse(Termin termin)
     {

@@ -1,6 +1,6 @@
 package com.example.lmsserver.kontroleri;
 
-import com.example.lmsserver.klase.Zadatak;
+
 import com.example.lmsserver.kontroleri.request.ZadatakRequest;
 import com.example.lmsserver.kontroleri.response.ZadatakResponse;
 import com.example.lmsserver.servisi.ZadatakService;

@@ -1,14 +1,10 @@
 package com.example.lmsserver.repozitorijumi;
 
-import com.example.lmsserver.klase.Predavac;
-import com.example.lmsserver.klase.ProveraZnanja;
 import com.example.lmsserver.klase.Termin;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 

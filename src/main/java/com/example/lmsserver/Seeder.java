@@ -16,7 +16,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -170,8 +169,8 @@ public class Seeder implements CommandLineRunner
         r.setZadatak(zadatak);
         r.setStudentTermin(studentTermin);
         r.setResenjeUrl(resenjeURL);
-        r.setKrenuo(krenuo);
-        r.setPredao(predao);
+        r.getStudentTermin().setUlazak(krenuo);
+        r.getStudentTermin().setPredaja(krenuo);
         r.setPoeni(poeni);
         return r;
     }
