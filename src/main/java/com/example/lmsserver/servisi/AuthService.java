@@ -66,7 +66,7 @@ public class AuthService {
                 .subject(email)
                 .issuedAt(sada)
                 .expiresAt(istice)
-                .claim("uloga", loginUloga)
+                .claim("uloga", loginUloga.name())
                 .claim("id", idKorisnika);
         JwsHeader header = JwsHeader.with(MacAlgorithm.HS256).build();
         String token = jwtEncoder.encode(JwtEncoderParameters.from(header, claims.build())).getTokenValue();
