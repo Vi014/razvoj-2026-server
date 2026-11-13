@@ -54,13 +54,13 @@ public class TerminController
         return terminService.terminiZaPredmet(id);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("update/{id}")
     public TerminResponse updateTermin(@PathVariable Long id, @RequestBody @Valid TerminRequest request)
     {
         return terminService.update(id, request);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("delete/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteTermin(@PathVariable Long id)
     {

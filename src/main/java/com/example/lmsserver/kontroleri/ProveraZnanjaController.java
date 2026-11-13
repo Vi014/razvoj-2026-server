@@ -49,13 +49,13 @@ public class ProveraZnanjaController
         return terminService.terminiZaProveru(id);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("update/{id}")
     public ProveraZnanjaResponse updateProveraZnanja(@PathVariable Long id, @RequestBody @Valid ProveraZnanjaRequest request)
     {
         return Konverteri.getInstance().ProveraZnanjaToProveraZnanjaResponse(proveraZnanjaService.update(id, request));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("delete/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteProveraZnanja(@PathVariable Long id)
     {

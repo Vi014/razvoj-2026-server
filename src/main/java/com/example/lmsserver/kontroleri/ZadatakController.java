@@ -28,13 +28,13 @@ public class ZadatakController {
         return zadatakService.getZadatakId(id);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("update/{id}")
     public ZadatakResponse updateZadatak(@PathVariable Long id, @RequestBody @Valid ZadatakRequest request)
     {
         return zadatakService.update(id, request);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("delete/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteZadatak(@PathVariable Long id)
     {

@@ -25,13 +25,13 @@ public class KomentarController
         return komentarService.save(request);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("update/{id}")
     public KomentarResponse updateKomentar(@PathVariable Long id, @RequestBody @Valid KomentarUpdateRequest request)
     {
         return komentarService.update(id, request);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("delete/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteKomentar(@PathVariable Long id, @RequestParam Long predavacId)
     {

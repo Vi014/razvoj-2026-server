@@ -82,6 +82,7 @@ public class KomentarService
         komentarRepository.delete(komentar);
     }
 
+    @Transactional
     public List<KomentarResponse> findByResenje(Long resenjeId)
     {
         if (!resenjeRepository.existsById(resenjeId))
