@@ -20,7 +20,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping(path = "/api/student")
 public class StudentController {
-    //TODO - dopuni ovo, imaš već negde zapisano šta fali
     final StudentService studentService;
 
     @PostMapping(path = "/add")
