@@ -9,6 +9,7 @@ import com.example.lmsserver.servisi.ZadatakService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -22,35 +23,42 @@ public class TerminController
     final TerminService terminService;
     final ZadatakService zadatakService;
 
-    @PostMapping(path = "/add")
-    @ResponseStatus(HttpStatus.CREATED)
-    public TerminResponse addNewTermin(@RequestBody @Valid TerminRequest terminRequest)
-    {
-        return terminService.save(terminRequest);
-    }
-
+    //region read
     @GetMapping(path = "/{id}")
+    @PreAuthorize("hasRole('PREDAVAC')")
     public TerminResponse getTerminById(@PathVariable int id)
     {
         return terminService.findTerminById(id);
     }
 
-    @GetMapping(path = "/{id}/zadaci")
-    public List<ZadatakResponse> getZadaciByTerminId(@PathVariable int id)
-    {
-        return zadatakService.getZadaciForTermin(id);
-    }
-
     @GetMapping(path = "/u-toku")
+    @PreAuthorize("hasRole('PREDAVAC')")
     public List<TerminResponse> getTerminiUToku()
     {
         return terminService.terminiUToku(LocalDateTime.now());
     }
 
     @GetMapping(path = "/predmet/{id}")
+    @PreAuthorize("hasRole('PREDAVAC')")
     public List<TerminResponse> getTerminiZaPredmet(@PathVariable int id)
     {
         return terminService.terminiZaPredmet(id);
+    }
+    //endregion
+
+    @GetMapping(path = "/{id}/zadaci")
+    @PreAuthorize("hasRole('PREDAVAC') or hasRole('STUDENT')")
+    public List<ZadatakResponse> getZadaciByTerminId(@PathVariable int id)
+    {
+        return zadatakService.getZadaciForTermin(id);
+    }
+
+    @PostMapping(path = "/add")
+    @PreAuthorize("hasRole('PREDAVAC')")
+    @ResponseStatus(HttpStatus.CREATED)
+    public TerminResponse addNewTermin(@RequestBody @Valid TerminRequest terminRequest)
+    {
+        return terminService.save(terminRequest);
     }
 
     @PutMapping("update/{id}")

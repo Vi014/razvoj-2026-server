@@ -40,7 +40,16 @@ public class SecurityConfig
             .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // rest je stateless i tako to
             .authorizeHttpRequests(auth -> auth
                             .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
-                            .requestMatchers(HttpMethod.GET, "/api/termin/**").authenticated()
+
+                            .requestMatchers(HttpMethod.POST,   "/api/termin/**").authenticated()
+                            .requestMatchers(HttpMethod.GET,    "/api/termin/**").authenticated()
+                            .requestMatchers(HttpMethod.PUT,    "/api/termin/**").authenticated()
+                            .requestMatchers(HttpMethod.DELETE, "/api/termin/**").authenticated()
+
+                            .requestMatchers(HttpMethod.POST,   "/api/zadatak/**").authenticated()
+                            .requestMatchers(HttpMethod.GET,    "/api/zadatak/**").authenticated()
+                            .requestMatchers(HttpMethod.PUT,    "/api/zadatak/**").authenticated()
+                            .requestMatchers(HttpMethod.DELETE, "/api/zadatak/**").authenticated()
                             .anyRequest().hasRole(LoginUloga.ADMIN.name())
                     )
             .oauth2ResourceServer(o -> o.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())));
