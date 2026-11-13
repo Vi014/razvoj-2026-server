@@ -84,6 +84,16 @@
 			<artifactId>spring-boot-starter-data-jpa-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+		</dependency>
+		<!-- Source: https://mvnrepository.com/artifact/org.springframework.security/spring-security-oauth2-jose -->
+		<!--<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-oauth2-jose</artifactId>
+			<scope>compile</scope>
+		</dependency> -->
 	</dependencies>
 
 	<build>
@@ -92,7 +102,6 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-
 			<!-- ovo smo koristili ranije za testiranje dok baza nije funkcionisala. vrv nam vise nece trebati, al nek ostane ovako iskomentarisano za svkai slucaj
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

@@ -3,6 +3,7 @@ package com.example.lmsserver.repozitorijumi;
 import com.example.lmsserver.klase.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,7 +11,7 @@ public interface StudentRepository extends JpaRepository<Student, Long>
 {
     // svaki repository sadrži u sebi sql upite vezane za tu tabelu (klasu), za ovo smatram da treba da se dogovorimo šta će ići u koj
 
-    List<Student> findByEmail(String email);
+    // Student findByEmail(String email);
 
     Optional<Student> findByBrojIndeksa(String brojIndeksa);
 
@@ -20,4 +21,6 @@ public interface StudentRepository extends JpaRepository<Student, Long>
     List<Student> findByGrupaIsNull();
 
     void deleteByBrojIndeksa(String brojIndeksa);
+
+    Student findByEmailIgnoreCase(String email);
 }

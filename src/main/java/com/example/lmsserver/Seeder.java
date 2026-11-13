@@ -9,6 +9,7 @@ import com.example.lmsserver.repozitorijumi.*;
 import com.example.lmsserver.util.EmailGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -37,6 +38,7 @@ public class Seeder implements CommandLineRunner
     private final StudentTerminRepository studentTerminRepository;
     private final ResenjeRepository resenjeRepository;
     private final KomentarRepository komentarRepository;
+    private final PasswordEncoder passwordEncoder;
     //endregion
 
     //region pomoćne metode za pravljenje entiteta
@@ -70,7 +72,7 @@ public class Seeder implements CommandLineRunner
         return p;
     }
 
-    private Predavac predavac(String ime, String prezime, String jmbg, LocalDate datumRodjenja, TipPredavaca titula)
+    private Predavac predavac(String ime, String prezime, String jmbg, LocalDate datumRodjenja, TipPredavaca titula, String lozinka)
     {
         Predavac p = new Predavac();
         p.setIme(ime);
@@ -79,10 +81,11 @@ public class Seeder implements CommandLineRunner
         p.setJmbg(jmbg);
         p.setDatumRodjenja(datumRodjenja);
         p.setTitula(titula);
+        p.setLozinka(passwordEncoder.encode(lozinka));
         return p;
     }
 
-    private Student student(String ime, String prezime, String jmbg, int godina, String brojIndeksa, Grupa grupa, Smer smer)
+    private Student student(String ime, String prezime, String jmbg, int godina, String brojIndeksa, Grupa grupa, Smer smer, String lozinka)
     {
         Student s = new Student();
         s.setIme(ime);
@@ -93,6 +96,7 @@ public class Seeder implements CommandLineRunner
         s.setGrupa(grupa);
         s.setSmer(smer);
         s.setEmail(EmailGenerator.GenerateStudentEmail(ime,prezime,brojIndeksa));
+        s.setLozinka(passwordEncoder.encode(lozinka));
         return s;
     }
 
@@ -236,36 +240,36 @@ public class Seeder implements CommandLineRunner
 
         //region predavači
         // https://konvertor.rs/jmbg-validator
-        Predavac pr0 = predavacRepository.save(predavac("Petar",    "Petrović",    "2104972720167", LocalDate.of(1972,  4, 21), TipPredavaca.REDOVNI_PROFESOR));
-        Predavac pr1 = predavacRepository.save(predavac("Jovana",   "Jovanović",  "2308971927498", LocalDate.of(1971,  8, 23), TipPredavaca.VANREDNI_PROFESOR));
-        Predavac pr2 = predavacRepository.save(predavac("Nikola",   "Nikolić",      "2503967132798", LocalDate.of(1967,  3, 25), TipPredavaca.REDOVNI_PROFESOR));
-        Predavac pr3 = predavacRepository.save(predavac("Tibor",    "Rácz",            "1208971820075", LocalDate.of(1971,  8, 12), TipPredavaca.REDOVNI_PROFESOR));
-        Predavac pr4 = predavacRepository.save(predavac("Lucija",   "Radić",          "1206992355612", LocalDate.of(1992,  6, 12), TipPredavaca.VANREDNI_PROFESOR));
-        Predavac pr5 = predavacRepository.save(predavac("Luka",     "Jurić",          "1208977311768", LocalDate.of(1977,  8, 12), TipPredavaca.REDOVNI_PROFESOR));
-        Predavac pr6 = predavacRepository.save(predavac("Etaoin",   "Shrdlu",    "2907973850396", LocalDate.of(1973,  7, 29), TipPredavaca.VANREDNI_PROFESOR));
-        Predavac pr7 = predavacRepository.save(predavac("Jasmina",  "Marić",          "0408978199908", LocalDate.of(1978,  8,  4), TipPredavaca.REDOVNI_PROFESOR));
-        Predavac pr8 = predavacRepository.save(predavac("Milica",   "Milić",          "1809961227140", LocalDate.of(1961,  9, 18), TipPredavaca.VANREDNI_PROFESOR));
-        Predavac pr9 = predavacRepository.save(predavac("John",     "Doe",              "1705978861463", LocalDate.of(1978,  5, 17), TipPredavaca.REDOVNI_PROFESOR));
+        Predavac pr0 = predavacRepository.save(predavac("Petar",    "Petrović",    "2104972720167", LocalDate.of(1972,  4, 21), TipPredavaca.REDOVNI_PROFESOR, "lozinka123"));
+        Predavac pr1 = predavacRepository.save(predavac("Jovana",   "Jovanović",  "2308971927498", LocalDate.of(1971,  8, 23), TipPredavaca.VANREDNI_PROFESOR, "lozinka123"));
+        Predavac pr2 = predavacRepository.save(predavac("Nikola",   "Nikolić",      "2503967132798", LocalDate.of(1967,  3, 25), TipPredavaca.REDOVNI_PROFESOR, "lozinka123"));
+        Predavac pr3 = predavacRepository.save(predavac("Tibor",    "Rácz",            "1208971820075", LocalDate.of(1971,  8, 12), TipPredavaca.REDOVNI_PROFESOR, "lozinka123"));
+        Predavac pr4 = predavacRepository.save(predavac("Lucija",   "Radić",          "1206992355612", LocalDate.of(1992,  6, 12), TipPredavaca.VANREDNI_PROFESOR, "lozinka123"));
+        Predavac pr5 = predavacRepository.save(predavac("Luka",     "Jurić",          "1208977311768", LocalDate.of(1977,  8, 12), TipPredavaca.REDOVNI_PROFESOR, "lozinka123"));
+        Predavac pr6 = predavacRepository.save(predavac("Etaoin",   "Shrdlu",    "2907973850396", LocalDate.of(1973,  7, 29), TipPredavaca.VANREDNI_PROFESOR, "lozinka123"));
+        Predavac pr7 = predavacRepository.save(predavac("Jasmina",  "Marić",          "0408978199908", LocalDate.of(1978,  8,  4), TipPredavaca.REDOVNI_PROFESOR, "lozinka123"));
+        Predavac pr8 = predavacRepository.save(predavac("Milica",   "Milić",          "1809961227140", LocalDate.of(1961,  9, 18), TipPredavaca.VANREDNI_PROFESOR, "lozinka123"));
+        Predavac pr9 = predavacRepository.save(predavac("John",     "Doe",              "1705978861463", LocalDate.of(1978,  5, 17), TipPredavaca.REDOVNI_PROFESOR, "lozinka123"));
 
-        Predavac as0 = predavacRepository.save(predavac("Miloš",    "Milošević",  "2008995123833", LocalDate.of(1995,  8, 20), TipPredavaca.ASISTENT));
-        Predavac as1 = predavacRepository.save(predavac("Filip",    "Filipović",  "2007000101607", LocalDate.of(2000,  7, 20), TipPredavaca.ASISTENT));
-        Predavac as2 = predavacRepository.save(predavac("Nikolina", "Marković",    "2809000966720", LocalDate.of(2000,  9, 28), TipPredavaca.ASISTENT));
-        Predavac as3 = predavacRepository.save(predavac("Amon",     "Gus",             "2507000172078", LocalDate.of(2000,  7, 25), TipPredavaca.ASISTENT));
-        Predavac as4 = predavacRepository.save(predavac("Jana",     "Janošević",  "1511001527116", LocalDate.of(2001, 11, 15), TipPredavaca.ASISTENT));
-        Predavac as5 = predavacRepository.save(predavac("Milena",   "Marinkov",    "3007003957603", LocalDate.of(2003,  7, 30), TipPredavaca.ASISTENT));
-        Predavac as6 = predavacRepository.save(predavac("Tanja",    "Tasić",         "2809003919766", LocalDate.of(2003,  9, 28), TipPredavaca.ASISTENT));
-        Predavac as7 = predavacRepository.save(predavac("Bogdan",   "Bogdanov",    "1501007750741", LocalDate.of(2007,  1, 15), TipPredavaca.ASISTENT));
-        Predavac as8 = predavacRepository.save(predavac("Mila",     "Petković",    "2506001465706", LocalDate.of(2001,  6, 25), TipPredavaca.ASISTENT));
-        Predavac as9 = predavacRepository.save(predavac("Jelena",   "Mitrović",    "3007005937758", LocalDate.of(2005,  7, 30), TipPredavaca.ASISTENT));
+        Predavac as0 = predavacRepository.save(predavac("Miloš",    "Milošević",  "2008995123833", LocalDate.of(1995,  8, 20), TipPredavaca.ASISTENT, "lozinka123"));
+        Predavac as1 = predavacRepository.save(predavac("Filip",    "Filipović",  "2007000101607", LocalDate.of(2000,  7, 20), TipPredavaca.ASISTENT, "lozinka123"));
+        Predavac as2 = predavacRepository.save(predavac("Nikolina", "Marković",    "2809000966720", LocalDate.of(2000,  9, 28), TipPredavaca.ASISTENT, "lozinka123"));
+        Predavac as3 = predavacRepository.save(predavac("Amon",     "Gus",             "2507000172078", LocalDate.of(2000,  7, 25), TipPredavaca.ASISTENT, "lozinka123"));
+        Predavac as4 = predavacRepository.save(predavac("Jana",     "Janošević",  "1511001527116", LocalDate.of(2001, 11, 15), TipPredavaca.ASISTENT, "lozinka123"));
+        Predavac as5 = predavacRepository.save(predavac("Milena",   "Marinkov",    "3007003957603", LocalDate.of(2003,  7, 30), TipPredavaca.ASISTENT, "lozinka123"));
+        Predavac as6 = predavacRepository.save(predavac("Tanja",    "Tasić",         "2809003919766", LocalDate.of(2003,  9, 28), TipPredavaca.ASISTENT, "lozinka123"));
+        Predavac as7 = predavacRepository.save(predavac("Bogdan",   "Bogdanov",    "1501007750741", LocalDate.of(2007,  1, 15), TipPredavaca.ASISTENT, "lozinka123"));
+        Predavac as8 = predavacRepository.save(predavac("Mila",     "Petković",    "2506001465706", LocalDate.of(2001,  6, 25), TipPredavaca.ASISTENT, "lozinka123"));
+        Predavac as9 = predavacRepository.save(predavac("Jelena",   "Mitrović",    "3007005937758", LocalDate.of(2005,  7, 30), TipPredavaca.ASISTENT, "lozinka123"));
 
-        Predavac dm0 = predavacRepository.save(predavac("Marko",    "Marković",    "2905992921668", LocalDate.of(1992,  5, 29), TipPredavaca.DEMONSTRATOR));
-        Predavac dm1 = predavacRepository.save(predavac("Mirka",    "Mirković",    "2910975769929", LocalDate.of(1975, 10, 29), TipPredavaca.DEMONSTRATOR));
-        Predavac dm2 = predavacRepository.save(predavac("Gustavo",  "Fring",          "1801991593442", LocalDate.of(1991,  1, 18), TipPredavaca.DEMONSTRATOR));
-        Predavac dm3 = predavacRepository.save(predavac("Branko",   "Branković",  "0612001121060", LocalDate.of(2001, 12,  6), TipPredavaca.DEMONSTRATOR));
+        Predavac dm0 = predavacRepository.save(predavac("Marko",    "Marković",    "2905992921668", LocalDate.of(1992,  5, 29), TipPredavaca.DEMONSTRATOR, "lozinka123"));
+        Predavac dm1 = predavacRepository.save(predavac("Mirka",    "Mirković",    "2910975769929", LocalDate.of(1975, 10, 29), TipPredavaca.DEMONSTRATOR, "lozinka123"));
+        Predavac dm2 = predavacRepository.save(predavac("Gustavo",  "Fring",          "1801991593442", LocalDate.of(1991,  1, 18), TipPredavaca.DEMONSTRATOR, "lozinka123"));
+        Predavac dm3 = predavacRepository.save(predavac("Branko",   "Branković",  "0612001121060", LocalDate.of(2001, 12,  6), TipPredavaca.DEMONSTRATOR, "lozinka123"));
 
-        /*Predavac ts1 = predavacRepository.save(predavac("Borko",   "Branković",  "0712001121060", LocalDate.of(2001, 12,  7), TipPredavaca.DEMONSTRATOR));
-        Predavac ts2 = predavacRepository.save(predavac("Branka",   "Branković",  "0812001121060", LocalDate.of(2001, 12,  8), TipPredavaca.DEMONSTRATOR));
-        Predavac ts3 = predavacRepository.save(predavac("Biserka",   "Branković",  "0912001121060", LocalDate.of(2001, 12,  9), TipPredavaca.DEMONSTRATOR));*/
+        Predavac ts1 = predavacRepository.save(predavac("Borko",   "Branković",  "0712001121060", LocalDate.of(2001, 12,  7), TipPredavaca.DEMONSTRATOR, "lozinka123"));
+        Predavac ts2 = predavacRepository.save(predavac("Branka",   "Branković",  "0812001121060", LocalDate.of(2001, 12,  8), TipPredavaca.DEMONSTRATOR, "lozinka123"));
+        Predavac ts3 = predavacRepository.save(predavac("Biserka",   "Branković",  "0912001121060", LocalDate.of(2001, 12,  9), TipPredavaca.DEMONSTRATOR, "lozinka123"));
         //endregion
 
         //region drziPredmet
@@ -352,92 +356,92 @@ public class Seeder implements CommandLineRunner
 
         //region Student
         List<Student> studenti = new ArrayList<>();
-        studenti.add(studentRepository.save(student("Marko","Petrović","0101998710015",1,"1/2021 RN", g101, rn)));
-        studenti.add(studentRepository.save(student("Ana","Jovanović","0202999710125",1,"2/2022 RI", g121, ri)));
-        studenti.add(studentRepository.save(student("Nikola","Ilić","0303000710230",1,"3/2023 SI", g111, si)));
-        studenti.add(studentRepository.save(student("Milica","Stanković","0404001710340",1,"4/2024 IS", g131, is)));
-        studenti.add(studentRepository.save(student("Lazar","Pavlović","0505002800416",1,"5/2025 IT", g1s1, it)));
-        studenti.add(studentRepository.save(student("Jelena","Nikolić","0606996710500",1,"6/2026 M5", g1sm1, sm)));
-        studenti.add(studentRepository.save(student("Đorđe","Đorđević","0707997710629",1,"7/2021 SI", g112, si)));
-        studenti.add(studentRepository.save(student("Teodora","Milosavljević","0808003710715",1,"8/2022 IT", g1s1, it)));
-        studenti.add(studentRepository.save(student("Ivan","Kostić","0909004710809",1,"9/2023 RN", g102, rn)));
-        studenti.add(studentRepository.save(student("Sara","Tomić","1010005710919",1,"10/2024 RI", g122, ri)));
-        studenti.add(studentRepository.save(student("Balázs","Kovács","1111999800122",1,"11/2025 IS", g131, is)));
-        studenti.add(studentRepository.save(student("Eszter","Nagy","1212000800237",1,"12/2026 SI", g111, si)));
-        studenti.add(studentRepository.save(student("Zoltán","Tóth","1301001800349",1,"13/2021 IT", g1s1, it)));
-        studenti.add(studentRepository.save(student("Katalin","Szabó","1402998800450",1,"14/2022 M5", g1sm1, sm)));
-        studenti.add(studentRepository.save(student("Peter","Horváth","1503999800560",1,"15/2023 RN", g101, rn)));
-        studenti.add(studentRepository.save(student("Zuzana","Kováčová","1604000800674",1,"16/2024 RI", g121, ri)));
-        studenti.add(studentRepository.save(student("Martin","Novák","1705001800784",1,"17/2025 SI", g112, si)));
-        studenti.add(studentRepository.save(student("Jakub","Varga","1806002800894",1,"18/2026 IS", g131, is)));
-        studenti.add(studentRepository.save(student("Ivana","Babić","1907003200905",1,"19/2021 IT", g1s1, it)));
-        studenti.add(studentRepository.save(student("Luka","Marić","2008004200013",1,"20/2022 RN", g102, rn)));
-        studenti.add(studentRepository.save(student("Mario","Horvat","2109005200127",1,"21/2023 RI", g122, ri)));
-        studenti.add(studentRepository.save(student("Petra","Kovačević","2210996200231",1,"22/2024 SI", g111, si)));
-        studenti.add(studentRepository.save(student("Tomislav","Jurić","2311997200341",1,"23/2025 M5", g1sm1, sm)));
-        studenti.add(studentRepository.save(student("Ante","Perić","2412998200451",1,"24/2026 IT", g1s1, it)));
-        studenti.add(studentRepository.save(student("Emir","Hadžić","2501999100566",1,"25/2021 IS", g131, is)));
-        studenti.add(studentRepository.save(student("Amina","Begović","2602000100678",1,"26/2022 SI", g112, si)));
-        studenti.add(studentRepository.save(student("Adnan","Mehmedović","2703001100781",1,"27/2023 RN", g101, rn)));
-        studenti.add(studentRepository.save(student("Lejla","Džaferović","2804002100895",1,"28/2024 IT", g1s1, it)));
-        studenti.add(studentRepository.save(student("Vuk","Simić","2905003710900",1,"29/2025 RI", g121, ri)));
-        studenti.add(studentRepository.save(student("Sofija","Radović","3006004710019",1,"30/2026 SI", g111, si)));
-        studenti.add(studentRepository.save(student("Aleksa","Rakić","3107005710122",1,"31/2021 M5", g1sm1, sm)));
-        studenti.add(studentRepository.save(student("Kristina","Vuković","0108996710233",1,"32/2022 IS", g131, is)));
-        studenti.add(studentRepository.save(student("Uroš","Obradović","0209997710340",1,"33/2023 IT", g1s1, it)));
-        studenti.add(studentRepository.save(student("Iva","Lukić","0310998710456",1,"34/2024 RN", g102, rn)));
-        studenti.add(studentRepository.save(student("Dušan","Filipović","0411999710560",1,"35/2025 SI", g112, si)));
-        studenti.add(studentRepository.save(student("Mila","Gajić","0512000710678",1,"36/2026 RI", g122, ri)));
-        studenti.add(studentRepository.save(student("Stefan","Jovičić","0601001710783",1,"37/2021 IT", g1s1, it)));
-        studenti.add(studentRepository.save(student("Nevena","Todorović","0702002710897",1,"38/2022 SI", g111, si)));
-        studenti.add(studentRepository.save(student("Bojan","Đukić","0803003710909",1,"39/2023 M5", g1sm1, sm)));
-        studenti.add(studentRepository.save(student("Andrea","Molnár","0904004800019",1,"40/2024 IS", g131, is)));
-        studenti.add(studentRepository.save(student("Dávid","Farkas","1005005800120",1,"41/2025 RN", g101, rn)));
-        studenti.add(studentRepository.save(student("Réka","Balogh","1106996800233",1,"42/2026 IT", g1s1, it)));
-        studenti.add(studentRepository.save(student("Miroslav","Konečný","1207997800347",1,"43/2021 SI", g112, si)));
-        studenti.add(studentRepository.save(student("Lucia","Hudáková","1308998800450",1,"44/2022 RI", g121, ri)));
-        studenti.add(studentRepository.save(student("Filip","Mitrović","1409999710565",1,"45/2023 IS", g131, is)));
-        studenti.add(studentRepository.save(student("Jovana","Ristić","1510000710675",1,"46/2024 SI", g111, si)));
-        studenti.add(studentRepository.save(student("Velibor","Savić","1611001710789",1,"47/2025 IT", g1s1, it)));
-        studenti.add(studentRepository.save(student("Dragana","Petrović","1712002710892",1,"48/2026 M5", g1sm1, sm)));
-        studenti.add(studentRepository.save(student("Nemanja","Kostić","1801003710906",1,"49/2021 RN", g102, rn)));
-        studenti.add(studentRepository.save(student("Tijana","Vasić","1902004710017",1,"50/2022 SI", g112, si)));
-        studenti.add(studentRepository.save(student("Stevan","Nešić","1604006711066",2,"66/2025 RN", g201, rn)));
-        studenti.add(studentRepository.save(student("Dunja","Popović","1705006711067",2,"67/2025 RN", g201, rn)));
-        studenti.add(studentRepository.save(student("Kosta","Milić","1806006711068",2,"68/2025 RN", g201, rn)));
-        studenti.add(studentRepository.save(student("Miloš","Stevanović","1907005711075",3,"75/2024 RN", g301, rn)));
-        studenti.add(studentRepository.save(student("Teodora","Krstić","2008005711076",3,"76/2024 RN", g301, rn)));
-        studenti.add(studentRepository.save(student("Aleksandar","Bogdanović","2109005711077",3,"77/2024 RN", g301, rn)));
-        studenti.add(studentRepository.save(student("Luka","Nedeljković","2210004711084",4,"84/2023 RN", g401, rn)));
-        studenti.add(studentRepository.save(student("Dragica","Sekulić","2311004711085",4,"85/2023 RN", g401, rn)));
-        studenti.add(studentRepository.save(student("Pavle","Tadić","2412004711086",4,"86/2023 RN", g401, rn)));
-        studenti.add(studentRepository.save(student("Andrija","Blagojević","2501006711069",2,"69/2025 SI", g211, si)));
-        studenti.add(studentRepository.save(student("Ema","Vlahović","2602006711070",2,"70/2025 SI", g211, si)));
-        studenti.add(studentRepository.save(student("Nikolina","Stojković","2703006711071",2,"71/2025 SI", g211, si)));
-        studenti.add(studentRepository.save(student("Jelisaveta","Mitić","2804005711078",3,"78/2024 SI", g311, si)));
-        studenti.add(studentRepository.save(student("Strahinja","Ćirić","2905005711079",3,"79/2024 SI", g311, si)));
-        studenti.add(studentRepository.save(student("Višnja","Pešić","3006005711080",3,"80/2024 SI", g311, si)));
-        studenti.add(studentRepository.save(student("Mina","Ostojić","0107004711087",4,"87/2023 SI", g411, si)));
-        studenti.add(studentRepository.save(student("Rade","Janjić","0208004711088",4,"88/2023 SI", g411, si)));
-        studenti.add(studentRepository.save(student("Nina","Kojić","0309004711089",4,"89/2023 SI", g411, si)));
-        studenti.add(studentRepository.save(student("Rastko","Lukić","0410006711072",2,"72/2025 RI", g221, ri)));
-        studenti.add(studentRepository.save(student("Sanja","Đokić","0511006711073",2,"73/2025 RI", g221, ri)));
-        studenti.add(studentRepository.save(student("Marija","Antić","0612006711074",2,"74/2025 RI", g221, ri)));
-        studenti.add(studentRepository.save(student("Bogdan","Aćimović","0701005711081",3,"81/2024 RI", g321, ri)));
-        studenti.add(studentRepository.save(student("Olivera","Radulović","0802005711082",3,"82/2024 RI", g321, ri)));
-        studenti.add(studentRepository.save(student("Danilo","Veselinović","0903005711083",3,"83/2024 RI", g321, ri)));
-        studenti.add(studentRepository.save(student("Marko","Kralj","1004004711090",4,"90/2023 RI", g421, ri)));
-        studenti.add(studentRepository.save(student("Anđela","Perišić","1105004711091",4,"91/2023 RI", g421, ri)));
-        studenti.add(studentRepository.save(student("Igor","Vidić","1206004711092",4,"92/2023 RI", g421, ri)));
-        studenti.add(studentRepository.save(student("Mirjana","Lalić","1901006711099",2,"99/2025 IT", g2s1, it)));
-        studenti.add(studentRepository.save(student("Dejan","Bjelić","2002006711100",2,"100/2025 IT", g2s1, it)));
-        studenti.add(studentRepository.save(student("Vera","Cvijanović","2103006711101",2,"101/2025 IT", g2s1, it)));
-        studenti.add(studentRepository.save(student("Gavrilo","Mandić","2204005711102",3,"102/2024 IT", g3s1, it)));
-        studenti.add(studentRepository.save(student("Sofija","Knežević","2305005711103",3,"103/2024 IT", g3s1, it)));
-        studenti.add(studentRepository.save(student("Ratko","Vujić","2406005711104",3,"104/2024 IT", g3s1, it)));
-        studenti.add(studentRepository.save(student("Radmila","Pejić","2810006711108",2,"108/2025 M5", g2sm1, sm)));
-        studenti.add(studentRepository.save(student("Svetozar","Maletić","2911006711109",2,"109/2025 M5", g2sm1, sm)));
-        studenti.add(studentRepository.save(student("Zlata","Rakonjac","3012006711110",2,"110/2025 M5", g2sm1, sm)));
+        studenti.add(studentRepository.save(student("Marko","Petrović","0101998710015",1,"1/2021 RN", g101, rn, "lozinka123")));
+        studenti.add(studentRepository.save(student("Ana","Jovanović","0202999710125",1,"2/2022 RI", g121, ri, "lozinka123")));
+        studenti.add(studentRepository.save(student("Nikola","Ilić","0303000710230",1,"3/2023 SI", g111, si, "lozinka123")));
+        studenti.add(studentRepository.save(student("Milica","Stanković","0404001710340",1,"4/2024 IS", g131, is, "lozinka123")));
+        studenti.add(studentRepository.save(student("Lazar","Pavlović","0505002800416",1,"5/2025 IT", g1s1, it, "lozinka123")));
+        studenti.add(studentRepository.save(student("Jelena","Nikolić","0606996710500",1,"6/2026 M5", g1sm1, sm, "lozinka123")));
+        studenti.add(studentRepository.save(student("Đorđe","Đorđević","0707997710629",1,"7/2021 SI", g112, si, "lozinka123")));
+        studenti.add(studentRepository.save(student("Teodora","Milosavljević","0808003710715",1,"8/2022 IT", g1s1, it, "lozinka123")));
+        studenti.add(studentRepository.save(student("Ivan","Kostić","0909004710809",1,"9/2023 RN", g102, rn, "lozinka123")));
+        studenti.add(studentRepository.save(student("Sara","Tomić","1010005710919",1,"10/2024 RI", g122, ri, "lozinka123")));
+        studenti.add(studentRepository.save(student("Balázs","Kovács","1111999800122",1,"11/2025 IS", g131, is, "lozinka123")));
+        studenti.add(studentRepository.save(student("Eszter","Nagy","1212000800237",1,"12/2026 SI", g111, si, "lozinka123")));
+        studenti.add(studentRepository.save(student("Zoltán","Tóth","1301001800349",1,"13/2021 IT", g1s1, it, "lozinka123")));
+        studenti.add(studentRepository.save(student("Katalin","Szabó","1402998800450",1,"14/2022 M5", g1sm1, sm, "lozinka123")));
+        studenti.add(studentRepository.save(student("Peter","Horváth","1503999800560",1,"15/2023 RN", g101, rn, "lozinka123")));
+        studenti.add(studentRepository.save(student("Zuzana","Kováčová","1604000800674",1,"16/2024 RI", g121, ri, "lozinka123")));
+        studenti.add(studentRepository.save(student("Martin","Novák","1705001800784",1,"17/2025 SI", g112, si, "lozinka123")));
+        studenti.add(studentRepository.save(student("Jakub","Varga","1806002800894",1,"18/2026 IS", g131, is, "lozinka123")));
+        studenti.add(studentRepository.save(student("Ivana","Babić","1907003200905",1,"19/2021 IT", g1s1, it, "lozinka123")));
+        studenti.add(studentRepository.save(student("Luka","Marić","2008004200013",1,"20/2022 RN", g102, rn, "lozinka123")));
+        studenti.add(studentRepository.save(student("Mario","Horvat","2109005200127",1,"21/2023 RI", g122, ri, "lozinka123")));
+        studenti.add(studentRepository.save(student("Petra","Kovačević","2210996200231",1,"22/2024 SI", g111, si, "lozinka123")));
+        studenti.add(studentRepository.save(student("Tomislav","Jurić","2311997200341",1,"23/2025 M5", g1sm1, sm, "lozinka123")));
+        studenti.add(studentRepository.save(student("Ante","Perić","2412998200451",1,"24/2026 IT", g1s1, it, "lozinka123")));
+        studenti.add(studentRepository.save(student("Emir","Hadžić","2501999100566",1,"25/2021 IS", g131, is, "lozinka123")));
+        studenti.add(studentRepository.save(student("Amina","Begović","2602000100678",1,"26/2022 SI", g112, si, "lozinka123")));
+        studenti.add(studentRepository.save(student("Adnan","Mehmedović","2703001100781",1,"27/2023 RN", g101, rn, "lozinka123")));
+        studenti.add(studentRepository.save(student("Lejla","Džaferović","2804002100895",1,"28/2024 IT", g1s1, it, "lozinka123")));
+        studenti.add(studentRepository.save(student("Vuk","Simić","2905003710900",1,"29/2025 RI", g121, ri, "lozinka123")));
+        studenti.add(studentRepository.save(student("Sofija","Radović","3006004710019",1,"30/2026 SI", g111, si, "lozinka123")));
+        studenti.add(studentRepository.save(student("Aleksa","Rakić","3107005710122",1,"31/2021 M5", g1sm1, sm, "lozinka123")));
+        studenti.add(studentRepository.save(student("Kristina","Vuković","0108996710233",1,"32/2022 IS", g131, is, "lozinka123")));
+        studenti.add(studentRepository.save(student("Uroš","Obradović","0209997710340",1,"33/2023 IT", g1s1, it, "lozinka123")));
+        studenti.add(studentRepository.save(student("Iva","Lukić","0310998710456",1,"34/2024 RN", g102, rn, "lozinka123")));
+        studenti.add(studentRepository.save(student("Dušan","Filipović","0411999710560",1,"35/2025 SI", g112, si, "lozinka123")));
+        studenti.add(studentRepository.save(student("Mila","Gajić","0512000710678",1,"36/2026 RI", g122, ri, "lozinka123")));
+        studenti.add(studentRepository.save(student("Stefan","Jovičić","0601001710783",1,"37/2021 IT", g1s1, it, "lozinka123")));
+        studenti.add(studentRepository.save(student("Nevena","Todorović","0702002710897",1,"38/2022 SI", g111, si, "lozinka123")));
+        studenti.add(studentRepository.save(student("Bojan","Đukić","0803003710909",1,"39/2023 M5", g1sm1, sm, "lozinka123")));
+        studenti.add(studentRepository.save(student("Andrea","Molnár","0904004800019",1,"40/2024 IS", g131, is, "lozinka123")));
+        studenti.add(studentRepository.save(student("Dávid","Farkas","1005005800120",1,"41/2025 RN", g101, rn, "lozinka123")));
+        studenti.add(studentRepository.save(student("Réka","Balogh","1106996800233",1,"42/2026 IT", g1s1, it, "lozinka123")));
+        studenti.add(studentRepository.save(student("Miroslav","Konečný","1207997800347",1,"43/2021 SI", g112, si, "lozinka123")));
+        studenti.add(studentRepository.save(student("Lucia","Hudáková","1308998800450",1,"44/2022 RI", g121, ri, "lozinka123")));
+        studenti.add(studentRepository.save(student("Filip","Mitrović","1409999710565",1,"45/2023 IS", g131, is, "lozinka123")));
+        studenti.add(studentRepository.save(student("Jovana","Ristić","1510000710675",1,"46/2024 SI", g111, si, "lozinka123")));
+        studenti.add(studentRepository.save(student("Velibor","Savić","1611001710789",1,"47/2025 IT", g1s1, it, "lozinka123")));
+        studenti.add(studentRepository.save(student("Dragana","Petrović","1712002710892",1,"48/2026 M5", g1sm1, sm, "lozinka123")));
+        studenti.add(studentRepository.save(student("Nemanja","Kostić","1801003710906",1,"49/2021 RN", g102, rn, "lozinka123")));
+        studenti.add(studentRepository.save(student("Tijana","Vasić","1902004710017",1,"50/2022 SI", g112, si, "lozinka123")));
+        studenti.add(studentRepository.save(student("Stevan","Nešić","1604006711066",2,"66/2025 RN", g201, rn, "lozinka123")));
+        studenti.add(studentRepository.save(student("Dunja","Popović","1705006711067",2,"67/2025 RN", g201, rn, "lozinka123")));
+        studenti.add(studentRepository.save(student("Kosta","Milić","1806006711068",2,"68/2025 RN", g201, rn, "lozinka123")));
+        studenti.add(studentRepository.save(student("Miloš","Stevanović","1907005711075",3,"75/2024 RN", g301, rn, "lozinka123")));
+        studenti.add(studentRepository.save(student("Teodora","Krstić","2008005711076",3,"76/2024 RN", g301, rn, "lozinka123")));
+        studenti.add(studentRepository.save(student("Aleksandar","Bogdanović","2109005711077",3,"77/2024 RN", g301, rn, "lozinka123")));
+        studenti.add(studentRepository.save(student("Luka","Nedeljković","2210004711084",4,"84/2023 RN", g401, rn, "lozinka123")));
+        studenti.add(studentRepository.save(student("Dragica","Sekulić","2311004711085",4,"85/2023 RN", g401, rn, "lozinka123")));
+        studenti.add(studentRepository.save(student("Pavle","Tadić","2412004711086",4,"86/2023 RN", g401, rn, "lozinka123")));
+        studenti.add(studentRepository.save(student("Andrija","Blagojević","2501006711069",2,"69/2025 SI", g211, si, "lozinka123")));
+        studenti.add(studentRepository.save(student("Ema","Vlahović","2602006711070",2,"70/2025 SI", g211, si, "lozinka123")));
+        studenti.add(studentRepository.save(student("Nikolina","Stojković","2703006711071",2,"71/2025 SI", g211, si, "lozinka123")));
+        studenti.add(studentRepository.save(student("Jelisaveta","Mitić","2804005711078",3,"78/2024 SI", g311, si, "lozinka123")));
+        studenti.add(studentRepository.save(student("Strahinja","Ćirić","2905005711079",3,"79/2024 SI", g311, si, "lozinka123")));
+        studenti.add(studentRepository.save(student("Višnja","Pešić","3006005711080",3,"80/2024 SI", g311, si, "lozinka123")));
+        studenti.add(studentRepository.save(student("Mina","Ostojić","0107004711087",4,"87/2023 SI", g411, si, "lozinka123")));
+        studenti.add(studentRepository.save(student("Rade","Janjić","0208004711088",4,"88/2023 SI", g411, si, "lozinka123")));
+        studenti.add(studentRepository.save(student("Nina","Kojić","0309004711089",4,"89/2023 SI", g411, si, "lozinka123")));
+        studenti.add(studentRepository.save(student("Rastko","Lukić","0410006711072",2,"72/2025 RI", g221, ri, "lozinka123")));
+        studenti.add(studentRepository.save(student("Sanja","Đokić","0511006711073",2,"73/2025 RI", g221, ri, "lozinka123")));
+        studenti.add(studentRepository.save(student("Marija","Antić","0612006711074",2,"74/2025 RI", g221, ri, "lozinka123")));
+        studenti.add(studentRepository.save(student("Bogdan","Aćimović","0701005711081",3,"81/2024 RI", g321, ri, "lozinka123")));
+        studenti.add(studentRepository.save(student("Olivera","Radulović","0802005711082",3,"82/2024 RI", g321, ri, "lozinka123")));
+        studenti.add(studentRepository.save(student("Danilo","Veselinović","0903005711083",3,"83/2024 RI", g321, ri, "lozinka123")));
+        studenti.add(studentRepository.save(student("Marko","Kralj","1004004711090",4,"90/2023 RI", g421, ri, "lozinka123")));
+        studenti.add(studentRepository.save(student("Anđela","Perišić","1105004711091",4,"91/2023 RI", g421, ri, "lozinka123")));
+        studenti.add(studentRepository.save(student("Igor","Vidić","1206004711092",4,"92/2023 RI", g421, ri, "lozinka123")));
+        studenti.add(studentRepository.save(student("Mirjana","Lalić","1901006711099",2,"99/2025 IT", g2s1, it, "lozinka123")));
+        studenti.add(studentRepository.save(student("Dejan","Bjelić","2002006711100",2,"100/2025 IT", g2s1, it, "lozinka123")));
+        studenti.add(studentRepository.save(student("Vera","Cvijanović","2103006711101",2,"101/2025 IT", g2s1, it, "lozinka123")));
+        studenti.add(studentRepository.save(student("Gavrilo","Mandić","2204005711102",3,"102/2024 IT", g3s1, it, "lozinka123")));
+        studenti.add(studentRepository.save(student("Sofija","Knežević","2305005711103",3,"103/2024 IT", g3s1, it, "lozinka123")));
+        studenti.add(studentRepository.save(student("Ratko","Vujić","2406005711104",3,"104/2024 IT", g3s1, it, "lozinka123")));
+        studenti.add(studentRepository.save(student("Radmila","Pejić","2810006711108",2,"108/2025 M5", g2sm1, sm, "lozinka123")));
+        studenti.add(studentRepository.save(student("Svetozar","Maletić","2911006711109",2,"109/2025 M5", g2sm1, sm, "lozinka123")));
+        studenti.add(studentRepository.save(student("Zlata","Rakonjac","3012006711110",2,"110/2025 M5", g2sm1, sm, "lozinka123")));
         //endregion
 
         //region StudentPredmet

@@ -17,4 +17,6 @@ public interface PredavacRepository extends JpaRepository<Predavac, Long>
             + "(:ime is null or lower(sp.ime) like lower(concat('%', :ime, '%'))) and "
             + "(:prezime is null or lower(sp.prezime) like lower(concat('%', :prezime, '%')))")
     List<Predavac> findByImeAndPrezime(String ime, String prezime);
+
+    Predavac findByEmailIgnoreCase(String email);
 }

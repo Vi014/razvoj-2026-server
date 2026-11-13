@@ -2,6 +2,8 @@ package com.example.lmsserver.kontroleri;
 
 import com.example.lmsserver.kontroleri.request.LoginRequest;
 import com.example.lmsserver.kontroleri.response.LoginResponse;
+import com.example.lmsserver.servisi.AuthService;
+import com.example.lmsserver.util.Konverteri;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,10 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 @RequestMapping(path = "/api/auth")
 public class AuthController {
-    //final AuthService authService;
+    final AuthService authService;
 
     @PostMapping(path="/login")
     public LoginResponse login(@RequestBody @Valid LoginRequest request) {
-        return null;
+        return Konverteri.getInstance().prijavaToLoginResponse(authService.login(request.getEmail(), request.getLozinka(), request.getUloga()));
     }
 }

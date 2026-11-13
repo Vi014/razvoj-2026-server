@@ -38,5 +38,6 @@ public class Student
     private Grupa grupa;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Smer smer;
-
+    @Column(nullable = false)
+    private String lozinka;
 }

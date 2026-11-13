@@ -6,6 +6,7 @@ import com.example.lmsserver.kontroleri.request.StudentRequest;
 import com.example.lmsserver.kontroleri.request.TerminRequest;
 import com.example.lmsserver.kontroleri.request.ZadatakRequest;
 import com.example.lmsserver.kontroleri.response.*;
+import com.example.lmsserver.servisi.AuthService;
 import jakarta.transaction.Transactional;
 
 public class Konverteri {
@@ -154,5 +155,9 @@ public class Konverteri {
         response.setPredavacImePrezime(komentar.getPredavac().getIme() + " " + komentar.getPredavac().getPrezime());
         response.setTekst(komentar.getTekst());
         return response;
+    }
+
+    public LoginResponse prijavaToLoginResponse(AuthService.Prijava prijava) {
+        return new LoginResponse(prijava.token(), prijava.istice(), prijava.uloga());
     }
 }

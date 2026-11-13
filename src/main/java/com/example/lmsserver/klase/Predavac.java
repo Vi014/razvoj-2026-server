@@ -36,4 +36,6 @@ public class Predavac
     @Column(nullable = false)
     private boolean aktivan = true;
     private TipPredavaca titula;
+    @Column(nullable = false)
+    private String lozinka;
 }
