@@ -18,6 +18,8 @@ public interface DrziPredmetRepository extends JpaRepository<DrziPredmet, Long>
 
     UlogaPredavaca Uloga(UlogaPredavaca uloga);
 
+    boolean existsByPredmetIdAndPredavacId(long predavacId, long predmetId);
+
     @Query("select count(dp) > 0 from DrziPredmet dp where dp.predavac.id = :predavacId and dp.predmet.id = :predmetId")
     boolean drziPredmet(@Param("predavacId") Long predavacId, @Param("predmetId") Long predmetId);
 }

@@ -50,7 +50,7 @@ public class SecurityConfig
                             .requestMatchers(HttpMethod.GET,    "/api/zadatak/**").authenticated()
                             .requestMatchers(HttpMethod.PUT,    "/api/zadatak/**").authenticated()
                             .requestMatchers(HttpMethod.DELETE, "/api/zadatak/**").authenticated()
-                            .anyRequest().hasRole(LoginUloga.ADMIN.name())
+                            .anyRequest().permitAll()
                     )
             .oauth2ResourceServer(o -> o.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())));
         return http.build();

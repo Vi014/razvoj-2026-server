@@ -4,6 +4,7 @@ package com.example.lmsserver.kontroleri;
 import com.example.lmsserver.kontroleri.request.TerminRequest;
 import com.example.lmsserver.kontroleri.response.TerminResponse;
 import com.example.lmsserver.kontroleri.response.ZadatakResponse;
+import com.example.lmsserver.servisi.PristupService;
 import com.example.lmsserver.servisi.TerminService;
 import com.example.lmsserver.servisi.ZadatakService;
 import jakarta.validation.Valid;
@@ -22,6 +23,7 @@ public class TerminController
 {
     final TerminService terminService;
     final ZadatakService zadatakService;
+    final PristupService pristupService;
 
     //region read
     @GetMapping(path = "/{id}")
@@ -32,7 +34,7 @@ public class TerminController
     }
 
     @GetMapping(path = "/u-toku")
-    @PreAuthorize("hasRole('PREDAVAC')")
+    @PreAuthorize("hasRole('PREDAVAC') or hasRole('STUDENT')")
     public List<TerminResponse> getTerminiUToku()
     {
         return terminService.terminiUToku(LocalDateTime.now());
@@ -47,14 +49,14 @@ public class TerminController
     //endregion
 
     @GetMapping(path = "/{id}/zadaci")
-    @PreAuthorize("hasRole('PREDAVAC') or hasRole('STUDENT')")
+    @PreAuthorize("hasRole('PREDAVAC') or @pristupService.studentPolazeTermin(#id)")
     public List<ZadatakResponse> getZadaciByTerminId(@PathVariable int id)
     {
         return zadatakService.getZadaciForTermin(id);
     }
 
     @PostMapping(path = "/add")
-    @PreAuthorize("hasRole('PREDAVAC')")
+    @PreAuthorize("hasRole('PREDAVAC') and @pristupService.jePredavacZaProveru(#terminRequest.proveraId)")
     @ResponseStatus(HttpStatus.CREATED)
     public TerminResponse addNewTermin(@RequestBody @Valid TerminRequest terminRequest)
     {
@@ -62,12 +64,14 @@ public class TerminController
     }
 
     @PutMapping("update/{id}")
+    @PreAuthorize("hasRole('PREDAVAC') and @pristupService.jePredavacZaTermin(#id)")
     public TerminResponse updateTermin(@PathVariable Long id, @RequestBody @Valid TerminRequest request)
     {
         return terminService.update(id, request);
     }
 
     @DeleteMapping("delete/{id}")
+    @PreAuthorize("hasRole('PREDAVAC') and @pristupService.jePredavacZaTermin(#id)")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteTermin(@PathVariable Long id)
     {

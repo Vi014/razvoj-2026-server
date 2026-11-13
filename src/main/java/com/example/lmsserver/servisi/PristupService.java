@@ -1,15 +1,15 @@
 package com.example.lmsserver.servisi;
 
-import com.example.lmsserver.klase.Termin;
-import com.example.lmsserver.klase.Zadatak;
-import com.example.lmsserver.repozitorijumi.TerminRepository;
-import com.example.lmsserver.repozitorijumi.ZadatakRepository;
+import com.example.lmsserver.klase.*;
+import com.example.lmsserver.repozitorijumi.*;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @Service
@@ -27,9 +27,27 @@ public class PristupService {
         Object id = jwt.getClaim("id");
         return id instanceof Number n ? n.longValue() : null;
     }
+
+    private String ulogovaniUloga() {
+        Jwt jwt = ulogovaniJwt();
+        if (jwt == null) return null;
+        Object uloga = jwt.getClaim("uloga");
+        return uloga instanceof String s ? s : null;
+    }
     //endregion
 
     //region repozitorijumi
+    final DrziPredmetRepository drziPredmetRepository;
+    final GrupaRepository grupaRepository;
+    final KomentarRepository komentarRepository;
+    final PredavacRepository predavacRepository;
+    final PredmetRepository predmetRepository;
+    final ProveraZnanjaRepository proveraZnanjaRepository;
+    final ResenjeRepository resenjeRepository;
+    final SmerRepository smerRepository;
+    final StudentPredmetRepository studentPredmetRepository;
+    final StudentRepository studentRepository;
+    final StudentTerminRepository studentTerminRepository;
     final TerminRepository terminRepository;
     final ZadatakRepository zadatakRepository;
     //endregion
@@ -46,7 +64,39 @@ public class PristupService {
         return zadatak.getTermin().getPredavac().getId().equals(ulogovaniId());
     }
 
-    /* public boolean jePredavacZaPredmet(Long predavacId, Long predmetId) {
+    public boolean jePredavacZaProveru(Long proveraId) {
+        ProveraZnanja provera = proveraZnanjaRepository.findById(proveraId)
+                        .orElseThrow(() -> new RuntimeException("Provera ne postoji"));
+        Long predmetIt = provera.getPredmet().getId();
+        return drziPredmetRepository.existsByPredmetIdAndPredavacId(predmetIt, ulogovaniId());
+    }
 
-    } */
+    public boolean studentPolazeZadatak(Long zadatakId) {
+        if(!(ulogovaniUloga().equals("STUDENT"))) return false;
+
+        Zadatak zadatak = zadatakRepository.findById(zadatakId)
+                        .orElseThrow(() -> new RuntimeException("Zadatak ne postoji"));
+
+        Long studentId = ulogovaniId();
+        Long terminId = zadatak.getTermin().getId();
+        LocalDateTime pocetak = zadatak.getTermin().getPocetak();
+        LocalDateTime kraj = zadatak.getTermin().getKraj();
+
+        if(LocalDateTime.now().isBefore(pocetak) || LocalDateTime.now().isAfter(kraj)) return false;
+        return studentTerminRepository.existsByTerminIdAndStudentId(terminId, studentId);
+    }
+
+    public boolean studentPolazeTermin(Long terminId) {
+        if(!(ulogovaniUloga().equals("STUDENT"))) return false;
+
+        Termin termin = terminRepository.findById(terminId)
+                .orElseThrow(() -> new RuntimeException("Termin ne postoji"));
+
+        Long studentId = ulogovaniId();
+        LocalDateTime pocetak = termin.getPocetak();
+        LocalDateTime kraj = termin.getKraj();
+
+        if(LocalDateTime.now().isBefore(pocetak) || LocalDateTime.now().isAfter(kraj)) return false;
+        return studentTerminRepository.existsByTerminIdAndStudentId(terminId, studentId);
+    }
 }

@@ -27,6 +27,7 @@ public class ZadatakController {
     }
 
     @GetMapping(path = "{id}")
+    @PreAuthorize("hasRole('PREDAVAC') or @pristupService.studentPolazeZadatak(#id)")
     public ZadatakResponse getZadatakById(@PathVariable long id)
     {
         return zadatakService.getZadatakId(id);
