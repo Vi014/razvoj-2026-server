@@ -2,6 +2,7 @@ package com.example.lmsserver.util;
 
 import com.example.lmsserver.klase.Predavac;
 import com.example.lmsserver.klase.Student;
+import com.example.lmsserver.repozitorijumi.PredavacRepository;
 
 import java.text.Normalizer;
 
@@ -26,19 +27,31 @@ public class EmailGenerator
         return GenerateStudentEmail(student.getIme(), student.getPrezime(), student.getBrojIndeksa());
     }
 
-    public static String GeneratePredavacEmail(String ime, String prezime)
+    public static String GeneratePredavacEmail(String ime, String prezime, PredavacRepository predavacRepository)
     {
         // TODO: provera da li mejl već postoji (dva predavača sa istim prvim slovom imena i istim prezimenom) te generisanje novog mejla
         // IDEJA: rekurzivna pomoćna funkcija. dodaš donju crtu između prvog i drugog karaktera. ako i taj mejl i dalje postoji, ponavljaš dok ne napraviš originalni mejl
         String email;
         Character prvoSlovoImena = ime.charAt(0);
         email = prvoSlovoImena + prezime.toLowerCase() + "@raf.rs";
-        return normalize(email);
+        email = normalize(email);
+
+        if(!(predavacRepository.findByEmail(email).isEmpty()))
+            return originalizujEmail(email, predavacRepository);
+
+        return email;
     }
 
-    public static String GeneratePredavacEmail(Predavac predavac)
+    public static String GeneratePredavacEmail(Predavac predavac, PredavacRepository predavacRepository)
     {
-        return GeneratePredavacEmail(predavac.getIme(), predavac.getPrezime());
+        return GeneratePredavacEmail(predavac.getIme(), predavac.getPrezime(), predavacRepository);
+    }
+
+    private static String originalizujEmail(String email, PredavacRepository predavacRepository) {
+        email = email.charAt(0) + "_" + email.substring(1);
+        if(!(predavacRepository.findByEmail(email).isEmpty()))
+            return originalizujEmail(email, predavacRepository);
+        return email;
     }
 
     private static String normalize(String input) {

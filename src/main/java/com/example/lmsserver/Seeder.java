@@ -76,7 +76,7 @@ public class Seeder implements CommandLineRunner
         Predavac p = new Predavac();
         p.setIme(ime);
         p.setPrezime(prezime);
-        p.setEmail(EmailGenerator.GeneratePredavacEmail(ime, prezime));
+        p.setEmail(EmailGenerator.GeneratePredavacEmail(ime, prezime, predavacRepository));
         p.setJmbg(jmbg);
         p.setDatumRodjenja(datumRodjenja);
         p.setTitula(titula);
@@ -263,6 +263,10 @@ public class Seeder implements CommandLineRunner
         Predavac dm1 = predavacRepository.save(predavac("Mirka",    "Mirković",    "2910975769929", LocalDate.of(1975, 10, 29), TipPredavaca.DEMONSTRATOR));
         Predavac dm2 = predavacRepository.save(predavac("Gustavo",  "Fring",          "1801991593442", LocalDate.of(1991,  1, 18), TipPredavaca.DEMONSTRATOR));
         Predavac dm3 = predavacRepository.save(predavac("Branko",   "Branković",  "0612001121060", LocalDate.of(2001, 12,  6), TipPredavaca.DEMONSTRATOR));
+
+        /*Predavac ts1 = predavacRepository.save(predavac("Borko",   "Branković",  "0712001121060", LocalDate.of(2001, 12,  7), TipPredavaca.DEMONSTRATOR));
+        Predavac ts2 = predavacRepository.save(predavac("Branka",   "Branković",  "0812001121060", LocalDate.of(2001, 12,  8), TipPredavaca.DEMONSTRATOR));
+        Predavac ts3 = predavacRepository.save(predavac("Biserka",   "Branković",  "0912001121060", LocalDate.of(2001, 12,  9), TipPredavaca.DEMONSTRATOR));*/
         //endregion
 
         //region drziPredmet

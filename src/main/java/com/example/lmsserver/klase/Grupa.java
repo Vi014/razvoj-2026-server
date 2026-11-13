@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -29,10 +31,12 @@ public class Grupa
     private int godina;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @ToString.Exclude
     private Smer smer;
 
     @ManyToMany
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @ToString.Exclude
     private Set<Predmet> predmeti = new HashSet<>();
 

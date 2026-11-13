@@ -24,7 +24,7 @@ public class StudentRequest {
     // email se UVEK automatski generiše te uopšte nije potreban ni u kom requestu
 
     @NotNull
-    //@Pattern(regexp = "\\d{13}", message = "JMBG u neispravnom formatu (proverite dužinu i prisustvo karaktera koji nisu cifre")
+    @Pattern(regexp = "\\d{13}", message = "JMBG u neispravnom formatu (proverite dužinu i prisustvo karaktera koji nisu cifre")
     private String jmbg;
 
     @PositiveOrZero

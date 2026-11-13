@@ -4,6 +4,7 @@ import com.example.lmsserver.klase.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface StudentRepository extends JpaRepository<Student, Long>
 {
@@ -11,10 +12,12 @@ public interface StudentRepository extends JpaRepository<Student, Long>
 
     List<Student> findByEmail(String email);
 
-    List<Student> findByBrojIndeksa(String brojIndeksa);
+    Optional<Student> findByBrojIndeksa(String brojIndeksa);
 
     List<Student> findByGrupaId(Long grupaId);
 
     // ovo bi trebalo raditi za ponovce
     List<Student> findByGrupaIsNull();
+
+    void deleteByBrojIndeksa(String brojIndeksa);
 }

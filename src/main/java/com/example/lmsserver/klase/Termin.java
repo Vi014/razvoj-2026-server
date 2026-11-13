@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -22,11 +24,13 @@ public class Termin
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "provera_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @ToString.Exclude
     private ProveraZnanja provera;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "predavac_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @ToString.Exclude
     private Predavac predavac;
 
