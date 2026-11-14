@@ -1,0 +1,23 @@
+$kind: http-request
+url: http://localhost:8090/api/resenje/predaj?zadatakId=8&resenjeUrl=https://git.example.com/nesto/nesto/resenje
+method: POST
+headers:
+  - key: Authorization
+    value: "{{bearer_token_0cwo}}"
+    disabled: false
+    description: JWT studenta
+  - key: Authorization
+    value: "{{bearer_token_0afx}}"
+    disabled: true
+    description: JWT pogresnog predavaca
+  - key: Authorization
+    value: "{{bearer_token_05y3}}"
+    disabled: true
+    description: JWT ispravnog predavaca
+queryParams:
+  zadatakId: "8"
+  resenjeUrl: https://git.example.com/nesto/nesto/resenje
+body:
+  type: json
+  content: ""
+order: 8901

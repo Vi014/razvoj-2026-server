@@ -1,0 +1,13 @@
+$kind: http-request
+description: ""
+url: http://localhost:8090/api/auth/login
+method: POST
+body:
+  type: json
+  content: |-
+    {
+    	"email": "ppetrovic@raf.rs",
+    	"lozinka": "lozinka123",
+    	"uloga": "PREDAVAC"
+    }
+order: 1730

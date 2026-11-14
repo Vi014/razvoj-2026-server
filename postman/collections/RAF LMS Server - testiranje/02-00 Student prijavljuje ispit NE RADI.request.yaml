@@ -1,0 +1,20 @@
+$kind: http-request
+url: http://localhost:8090/api/prijava/add
+method: POST
+headers:
+  - key: Authorization
+    value: "{{bearer_token_0cwo}}"
+    disabled: false
+    description: JWT studenta
+  - key: Authorization
+    value: "{{bearer_token_0afx}}"
+    disabled: true
+    description: JWT predavaca
+body:
+  type: json
+  content: |-
+    {
+    	"terminId": 5,
+    	"studentId": 1
+    }
+order: 5901
