@@ -7,6 +7,7 @@ import com.example.lmsserver.klase.enumi.StatusPolaganja;
 import com.example.lmsserver.repozitorijumi.StudentRepository;
 import com.example.lmsserver.repozitorijumi.StudentTerminRepository;
 import com.example.lmsserver.repozitorijumi.TerminRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ public class StudentTerminService {
     private final StudentRepository studentRepository;
     private final TerminRepository terminRepository;
 
+    @Transactional
     public void addStudentsToTermin(Long terminId, List<Long> studentIds) {
         Termin termin = terminRepository.findById(terminId)
                 .orElseThrow(() -> new RuntimeException("Termin with id " + terminId + " not found"));

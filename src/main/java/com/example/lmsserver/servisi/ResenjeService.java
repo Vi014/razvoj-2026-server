@@ -77,6 +77,7 @@ public class ResenjeService
         return Konverteri.getInstance().ResenjeToResenjeResponse(resenjeRepository.save(resenje));
     }
 
+    @Transactional
     public PoeniResponse getPoeni(Long resenjeId)
     {
         Resenje resenje = resenjeRepository.findById(resenjeId)
@@ -84,6 +85,7 @@ public class ResenjeService
         return new PoeniResponse(resenje.getPoeni());
     }
 
+    @Transactional
     public ResenjeResponse getResenjeById(Long resenjeId)
     {
         return Konverteri.getInstance().ResenjeToResenjeResponse(resenjeRepository.findById(resenjeId).orElseThrow(() -> new ResourceNotFoundException("Resenje sa id " + resenjeId + " ne postoji.")));

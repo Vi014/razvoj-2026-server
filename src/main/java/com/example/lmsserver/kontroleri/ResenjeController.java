@@ -38,7 +38,7 @@ public class ResenjeController
         return resenjeService.upisiPoene(resenjeId, poeniRequest);
     }
 
-    @PutMapping(path = "/{resenjeId}/getPoeni")
+    @GetMapping(path = "/{resenjeId}/getPoeni")
     @PreAuthorize("@pristupService.jePredavacZaResenje(#resenjeId) or @pristupService.studentuPripadaResenje(#resenjeId)")
     public PoeniResponse getPoeni(@PathVariable Long resenjeId)
     {

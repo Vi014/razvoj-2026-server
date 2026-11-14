@@ -83,11 +83,13 @@ public class ProveraZnanjaService
     }
 
 
+    @Transactional
     public Page<ProveraZnanja> findAll(int page, int size)
     {
         return proveraZnanjaRepository.findAll(PageRequest.of(page, size, Sort.by("id").descending()));
     }
 
+    @Transactional
     public ProveraZnanja findById(long id)
     {
         return proveraZnanjaRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Provera znanja sa id-jem '" + id + "' ne postoji."));
