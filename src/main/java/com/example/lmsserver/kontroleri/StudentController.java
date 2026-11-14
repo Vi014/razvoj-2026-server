@@ -5,12 +5,14 @@ import com.example.lmsserver.kontroleri.request.StudentRequest;
 import com.example.lmsserver.kontroleri.request.StudentUpdateRequest;
 import com.example.lmsserver.kontroleri.response.PageResponse;
 import com.example.lmsserver.kontroleri.response.StudentResponse;
+import com.example.lmsserver.servisi.PristupService;
 import com.example.lmsserver.servisi.StudentService;
 import com.example.lmsserver.util.Konverteri;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,28 +22,34 @@ import java.util.List;
 @RequestMapping(path = "/api/student")
 public class StudentController {
     final StudentService studentService;
+    final PristupService pristupService;
 
     @PostMapping(path = "/add")
+    @PreAuthorize("hasRole('ADMIN')")
     public Long addNewStudent(@RequestBody @Valid StudentRequest studentRequest) {
         return studentService.save(studentRequest).getId();
     }
 
     @GetMapping(path = "/all")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('PREDAVAC')")
     public List<StudentResponse> getAllStudenti() {
         return studentService.findAll();
     }
 
     @GetMapping(path = "/all/paginated")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('PREDAVAC')")
     public PageResponse<StudentResponse> getAllStudentPodaciPaginated(@RequestParam(defaultValue="0") Integer page, @RequestParam(defaultValue="10") Integer size) {
         return PageResponse.of(studentService.findAll(page, size), Konverteri.getInstance()::StudentToStudentResponse);
     }
 
     @GetMapping(path="/podaci/id")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('PREDAVAC') or pristupService.jeSvojId(#id)")
     public StudentResponse getStudentById(@RequestParam Long id){ // ovde koristimo RequestParam samo zbog konzistentnosti sa getByIndeks
         return studentService.findById(id);
     }
 
     @GetMapping(path="/podaci/index")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('PREDAVAC') or pristupService.jeSvojIndeks(#brojIndeksa)")
     public StudentResponse getStudentByIndeks(@RequestParam String brojIndeksa){ // RequestParam pouzdaniji od PathVariable jer br indeksa ima kosu crtu i razmak u sebi
         return studentService.findByIndeks(brojIndeksa);
     }
@@ -49,6 +57,7 @@ public class StudentController {
     // ResponseEntity je spring klasa za slanje http responseova
     // https://www.geeksforgeeks.org/advance-java/how-to-use-spring-responseentity-to-manipulate-the-http-response/
     @DeleteMapping(path="/delete/id")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> deleteStudentById(@RequestParam Long id) {
         // gugl tj. brave search kaze da je najbolja praksa slati 404 Not Found ako id kog zelimo obrisati ne postoji a 204 No Content ako smo ga uspesno obrisali
         if(studentService.findById(id) == null)
@@ -58,6 +67,7 @@ public class StudentController {
     }
 
     @DeleteMapping(path="/delete/index")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> deleteStudentByIndex(@RequestParam String brojIndeksa) {
         if(studentService.findByIndeks(brojIndeksa) == null)
             return new ResponseEntity<>("U bazi već ne postoji student sa datim brojem indeksa", HttpStatus.NOT_FOUND);
@@ -66,6 +76,7 @@ public class StudentController {
     }
 
     @PutMapping(path="/update/id")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<StudentResponse> updateStudentById(@RequestParam Long id, @RequestBody @Valid StudentUpdateRequest newData) {
         if(studentService.findById(id) == null)
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -76,6 +87,7 @@ public class StudentController {
     }
 
     @PutMapping(path="/update/index")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<StudentResponse> updateStudentByIndex(@RequestParam String brojIndeksa, @RequestBody @Valid StudentUpdateRequest newData) {
         if(studentService.findByIndeks(brojIndeksa) == null)
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

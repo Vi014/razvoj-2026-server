@@ -7,6 +7,7 @@ import com.example.lmsserver.servisi.KomentarService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class KomentarController
     private final KomentarService komentarService;
 
     @PostMapping("/add")
+    @PreAuthorize("hasRole('PREDAVAC') and @pristupService.jePredavacZaResenje(#request.resenjeId)")
     @ResponseStatus(HttpStatus.CREATED)
     public KomentarResponse addKomentar(@RequestBody @Valid KomentarRequest request)
     {
@@ -26,12 +28,14 @@ public class KomentarController
     }
 
     @PutMapping("update/{id}")
+    @PreAuthorize("hasRole('PREDAVAC') and @pristupService.jePredavacZaKomentar(#id)")
     public KomentarResponse updateKomentar(@PathVariable Long id, @RequestBody @Valid KomentarUpdateRequest request)
     {
         return komentarService.update(id, request);
     }
 
     @DeleteMapping("delete/{id}")
+    @PreAuthorize("hasRole('PREDAVAC') and @pristupService.jePredavacZaKomentar(#id)")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteKomentar(@PathVariable Long id, @RequestParam Long predavacId)
     {
@@ -39,6 +43,7 @@ public class KomentarController
     }
 
     @GetMapping("/resenje/{resenjeId}")
+    @PreAuthorize("@pristupService.jePredavacZaResenje(#resenjeId) or @pristupService.studentuPripadaResenje(#resenjeId)")
     public List<KomentarResponse> getKomentariZaResenje(@PathVariable Long resenjeId)
     {
         return komentarService.findByResenje(resenjeId);

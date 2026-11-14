@@ -43,4 +43,11 @@ public class ResenjeController
     {
         return resenjeService.getPoeni(resenjeId);
     }
+
+    @GetMapping(path = "/get/{resenjeId}")
+    @PreAuthorize("hasRole('PREDAVAC') and @pristupService.jePredavacZaResenje(#resenjeId)")
+    public ResenjeResponse getResenjeById(@PathVariable Long resenjeId)
+    {
+        return resenjeService.getResenjeById(resenjeId);
+    }
 }

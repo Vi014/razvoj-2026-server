@@ -84,6 +84,13 @@ public class PristupService {
         return resenje.getZadatak().getTermin().getPredavac().getId().equals(ulogovaniId());
     }
 
+    public boolean jePredavacZaKomentar(Long komentarId) {
+        if(!(ulogovaniUloga().equals("PREDAVAC"))) return false;
+        Komentar komentar = komentarRepository.findById(komentarId)
+                        .orElseThrow(() -> new RuntimeException("Komentar ne postoji"));
+        return jePredavacZaResenje(komentar.getResenje().getId());
+    }
+
     public boolean studentPolazeZadatak(Long zadatakId) {
         if(!(ulogovaniUloga().equals("STUDENT"))) return false;
 
@@ -125,5 +132,15 @@ public class PristupService {
         Resenje resenje = resenjeRepository.findById(resenjeId)
                 .orElseThrow(() -> new RuntimeException("Resenje ne postoji"));
         return resenje.getStudentTermin().getStudent().getId().equals(ulogovaniId());
+    }
+
+    public boolean jeSvojId(Long id) {
+        return ulogovaniId().equals(id);
+    }
+
+    public boolean jeSvojIndeks(String brojIndeksa) {
+        Student student = studentRepository.findById(ulogovaniId())
+                .orElseThrow(() -> new RuntimeException("Student ne postoji"));
+        return student.getBrojIndeksa().equals(brojIndeksa);
     }
 }

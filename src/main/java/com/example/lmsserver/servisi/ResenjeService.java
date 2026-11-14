@@ -83,4 +83,9 @@ public class ResenjeService
                 .orElseThrow(() -> new ResourceNotFoundException("Resenje sa id " + resenjeId + " ne postoji."));
         return new PoeniResponse(resenje.getPoeni());
     }
+
+    public ResenjeResponse getResenjeById(Long resenjeId)
+    {
+        return Konverteri.getInstance().ResenjeToResenjeResponse(resenjeRepository.findById(resenjeId).orElseThrow(() -> new ResourceNotFoundException("Resenje sa id " + resenjeId + " ne postoji."))));
+    }
 }

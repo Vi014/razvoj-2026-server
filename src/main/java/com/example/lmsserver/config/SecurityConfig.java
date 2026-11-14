@@ -41,7 +41,7 @@ public class SecurityConfig
             .authorizeHttpRequests(auth -> auth
                             .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
 
-                            .requestMatchers(HttpMethod.POST,   "/api/termin/**").authenticated()
+                            /*.requestMatchers(HttpMethod.POST,   "/api/termin/**").authenticated()
                             .requestMatchers(HttpMethod.GET,    "/api/termin/**").authenticated()
                             .requestMatchers(HttpMethod.PUT,    "/api/termin/**").authenticated()
                             .requestMatchers(HttpMethod.DELETE, "/api/termin/**").authenticated()
@@ -50,7 +50,8 @@ public class SecurityConfig
                             .requestMatchers(HttpMethod.GET,    "/api/zadatak/**").authenticated()
                             .requestMatchers(HttpMethod.PUT,    "/api/zadatak/**").authenticated()
                             .requestMatchers(HttpMethod.DELETE, "/api/zadatak/**").authenticated()
-                            .anyRequest().permitAll()
+                            .anyRequest().permitAll()*/
+                            .anyRequest().authenticated()
                     )
             .oauth2ResourceServer(o -> o.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())));
         return http.build();

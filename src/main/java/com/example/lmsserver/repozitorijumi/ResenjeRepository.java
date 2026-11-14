@@ -18,5 +18,4 @@ public interface ResenjeRepository extends JpaRepository<Resenje, Long>
 
     @Query("select r from Resenje r join fetch r.zadatak z where r.studentTermin.id = :studentTerminId")
     List<Resenje> findAllByStudentTerminId(@Param("studentTerminId") Long studentTerminId);
-
 }
