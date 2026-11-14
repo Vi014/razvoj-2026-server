@@ -86,6 +86,6 @@ public class ResenjeService
 
     public ResenjeResponse getResenjeById(Long resenjeId)
     {
-        return Konverteri.getInstance().ResenjeToResenjeResponse(resenjeRepository.findById(resenjeId).orElseThrow(() -> new ResourceNotFoundException("Resenje sa id " + resenjeId + " ne postoji."))));
+        return Konverteri.getInstance().ResenjeToResenjeResponse(resenjeRepository.findById(resenjeId).orElseThrow(() -> new ResourceNotFoundException("Resenje sa id " + resenjeId + " ne postoji.")));
     }
 }
