@@ -16,14 +16,16 @@ public class PolaganjeController
     final PolaganjeService polaganjeService;
 
     @PostMapping(path = "/ulazak")
-    @PreAuthorize("@pristupService.studentPolazeZadatak(#id)")
+    //@PreAuthorize("hasRole('STUDENT')")
+    @PreAuthorize("@pristupService.studentPolazeTermin(#id)")
     public UlazakResponse udjiUTermin(@RequestBody @Valid Long id)
     {
         return polaganjeService.ulazak(id);
     }
 
     @PutMapping("/izlazak")
-    @PreAuthorize("@pristupService.studentPolazeZadatak(#id)")
+    //@PreAuthorize("hasRole('STUDENT')")
+    @PreAuthorize("@pristupService.studentPolazeTermin(#id)")
     public IzlazakResponse izadjiIzTermina(@RequestBody @Valid Long id)
     {
         return polaganjeService.izlazak(id);

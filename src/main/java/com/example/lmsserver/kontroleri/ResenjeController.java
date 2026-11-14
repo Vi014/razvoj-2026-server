@@ -17,7 +17,8 @@ public class ResenjeController
     final ResenjeService resenjeService;
 
     @PostMapping(path = "/predaj")
-    @PreAuthorize("hasRole('STUDENT') and @pristupService.studentPolazeZadatak(#zadatakId)")
+    //@PreAuthorize("hasRole('STUDENT') and @pristupService.studentPolazeZadatak(#zadatakId)")
+    @PreAuthorize("hasRole('STUDENT')")
     public ResenjeResponse predajResenje(@RequestParam Long zadatakId, @RequestParam String resenjeUrl)
     {
         return resenjeService.predajResenje(zadatakId, resenjeUrl);
