@@ -7,8 +7,6 @@ import com.example.lmsserver.klase.Resenje;
 import com.example.lmsserver.klase.StudentTermin;
 import com.example.lmsserver.klase.Termin;
 import com.example.lmsserver.klase.enumi.StatusPolaganja;
-import com.example.lmsserver.kontroleri.request.IzlazakRequest;
-import com.example.lmsserver.kontroleri.request.UlazakRequest;
 import com.example.lmsserver.kontroleri.response.IzlazakResponse;
 import com.example.lmsserver.kontroleri.response.UlazakResponse;
 import com.example.lmsserver.kontroleri.response.ZadatakResponse;
@@ -32,11 +30,12 @@ public class PolaganjeService
     private final StudentTerminRepository studentTerminRepository;
     private final ZadatakRepository zadatakRepository;
     private final ResenjeRepository resenjeRepository;
+    private final PristupService pristupService;
 
     @Transactional
-    public UlazakResponse ulazak(UlazakRequest request)
+    public UlazakResponse ulazak(Long terminId)
     {
-        StudentTermin prijava = studentTerminRepository.findByTerminIdAndStudentId(request.getTerminId(), request.getStudentId());
+        StudentTermin prijava = studentTerminRepository.findByTerminIdAndStudentId(terminId, pristupService.ulogovaniId());
         Termin termin = prijava.getTermin();
 
         // na sekundu tacno: toliko je dovoljno za monitoring, a vrednost iz odgovora je ista kao ona u bazi
@@ -79,9 +78,9 @@ public class PolaganjeService
     }
 
     @Transactional
-    public IzlazakResponse izlazak(IzlazakRequest request)
+    public IzlazakResponse izlazak(Long terminId)
     {
-        StudentTermin prijava = studentTerminRepository.findByTerminIdAndStudentId(request.getTerminId(), request.getStudentId());
+        StudentTermin prijava = studentTerminRepository.findByTerminIdAndStudentId(terminId, pristupService.ulogovaniId());
         if (prijava == null)
         {
             throw new ResourceNotFoundException("Student nije prijavljen na ovaj termin.");

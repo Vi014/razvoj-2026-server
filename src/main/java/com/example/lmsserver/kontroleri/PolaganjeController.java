@@ -1,12 +1,11 @@
 package com.example.lmsserver.kontroleri;
 
-import com.example.lmsserver.kontroleri.request.IzlazakRequest;
-import com.example.lmsserver.kontroleri.request.UlazakRequest;
 import com.example.lmsserver.kontroleri.response.IzlazakResponse;
 import com.example.lmsserver.kontroleri.response.UlazakResponse;
 import com.example.lmsserver.servisi.PolaganjeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,14 +16,16 @@ public class PolaganjeController
     final PolaganjeService polaganjeService;
 
     @PostMapping(path = "/ulazak")
-    public UlazakResponse udjiUTermin(@RequestBody @Valid UlazakRequest ulazakRequest)
+    @PreAuthorize("@pristupService.studentPolazeZadatak(#id)")
+    public UlazakResponse udjiUTermin(@RequestBody @Valid Long id)
     {
-        return polaganjeService.ulazak(ulazakRequest);
+        return polaganjeService.ulazak(id);
     }
 
     @PutMapping("/izlazak")
-    public IzlazakResponse izadjiIzTermina(@RequestBody @Valid IzlazakRequest request)
+    @PreAuthorize("@pristupService.studentPolazeZadatak(#id)")
+    public IzlazakResponse izadjiIzTermina(@RequestBody @Valid Long id)
     {
-        return polaganjeService.izlazak(request);
+        return polaganjeService.izlazak(id);
     }
 }

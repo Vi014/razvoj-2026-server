@@ -1,6 +1,7 @@
 package com.example.lmsserver.servisi;
 
 import com.example.lmsserver.klase.*;
+import com.example.lmsserver.klase.enumi.StatusPolaganja;
 import com.example.lmsserver.repozitorijumi.*;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -21,14 +22,14 @@ public class PristupService {
         return auth != null && auth.getPrincipal() instanceof Jwt jwt ? jwt : null;
     }
 
-    private Long ulogovaniId() {
+    public Long ulogovaniId() {
         Jwt jwt = ulogovaniJwt();
         if (jwt == null) return null;
         Object id = jwt.getClaim("id");
         return id instanceof Number n ? n.longValue() : null;
     }
 
-    private String ulogovaniUloga() {
+    public   String ulogovaniUloga() {
         Jwt jwt = ulogovaniJwt();
         if (jwt == null) return null;
         Object uloga = jwt.getClaim("uloga");
@@ -71,6 +72,18 @@ public class PristupService {
         return drziPredmetRepository.existsByPredmetIdAndPredavacId(predmetIt, ulogovaniId());
     }
 
+    public boolean jePredavacZaResenje(Long resenjeId) {
+        if(!(ulogovaniUloga().equals("PREDAVAC"))) return false;
+
+        Resenje resenje = resenjeRepository.findById(resenjeId)
+                        .orElseThrow(() -> new RuntimeException("Resenje ne postoji"));
+
+        LocalDateTime kraj = resenje.getZadatak().getTermin().getKraj();
+        if(LocalDateTime.now().isBefore(kraj)) return false; // ne moze ocenjivati resenje dok provera znanja i dalje traje
+
+        return resenje.getZadatak().getTermin().getPredavac().getId().equals(ulogovaniId());
+    }
+
     public boolean studentPolazeZadatak(Long zadatakId) {
         if(!(ulogovaniUloga().equals("STUDENT"))) return false;
 
@@ -96,7 +109,21 @@ public class PristupService {
         LocalDateTime pocetak = termin.getPocetak();
         LocalDateTime kraj = termin.getKraj();
 
-        if(LocalDateTime.now().isBefore(pocetak) || LocalDateTime.now().isAfter(kraj)) return false;
+        StudentTermin studentTermin = studentTerminRepository.findByTerminIdAndStudentId(terminId, studentId);
+
+        if(LocalDateTime.now().isBefore(pocetak) || LocalDateTime.now().isAfter(kraj) || studentTermin.getStatus() == StatusPolaganja.NIJE_PRIJAVLJEN) return false;
         return studentTerminRepository.existsByTerminIdAndStudentId(terminId, studentId);
+    }
+
+    public boolean studentPolazeResenje(Long resenjeId) {
+        Resenje resenje = resenjeRepository.findById(resenjeId)
+                .orElseThrow(() -> new RuntimeException("Resenje ne postoji"));
+        return studentPolazeZadatak(resenje.getZadatak().getId());
+    }
+
+    public boolean studentuPripadaResenje(Long resenjeId) {
+        Resenje resenje = resenjeRepository.findById(resenjeId)
+                .orElseThrow(() -> new RuntimeException("Resenje ne postoji"));
+        return resenje.getStudentTermin().getStudent().getId().equals(ulogovaniId());
     }
 }
